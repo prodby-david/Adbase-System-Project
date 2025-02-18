@@ -1,0 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&display=swap');
+
+
+
+@import "tailwindcss";
+
+@theme{
+  --color-main-color: #D2691E;
+  --color-accent-color:  #F4A460;
+  --color-bg-color: #FFF8E1;
+  --color-text-color: #5C4033;
+  --font-lora: "Lora", "Poppins", sans-serif;
+}
+
+body{
+  background-color: #FFF8E1;
+}
+
+::-webkit-scrollbar{
+  display: none;
+}
