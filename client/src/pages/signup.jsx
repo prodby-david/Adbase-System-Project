@@ -1,7 +1,10 @@
 import React, {useState} from 'react'
-import { Navigate } from 'react-router-dom';
+import Swal from 'sweetalert2'
+import axios from 'axios'
+import {useNavigate} from 'react-router-dom'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faCookieBite, faChevronLeft} from "@fortawesome/free-solid-svg-icons";
+
 
 const SignUp = () => {
 
@@ -13,12 +16,15 @@ const SignUp = () => {
     confirmpassword: ''
   });
 
+  const [error, setError] = useState('');
   const [firstnameError, setFirstnameError] = useState('');
   const [lastnameError, setLastnameError] = useState('');
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
 
-  const emailValidation = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.(com|org|edu|ph)$/;
+  const navigate = useNavigate();
+
+  const emailValidation =  /^[a-zA-Z0-9][a-zA-Z0-9._-]*@[a-zA-Z0-9.-]+\.(com|org|edu|ph)$/;
   const namesValidation = /^[a-zA-Z\s]+$/
 
 
@@ -42,31 +48,69 @@ const SignUp = () => {
 
       if(!namesValidation.test(userData.firstname)){
         setFirstnameError('Names should be letters and spaces only.');
+        return;
       }
 
       if(!namesValidation.test(userData.lastname)){
-        setFirstnameError('Names should be letters and spaces only.');
+        setLastnameError('Names should be letters and spaces only.');
+        return;
       }
 
       if(!emailValidation.test(userData.email)){
-        setEmailError('Email not recognized. Please enter a valid email address.');S
+        setEmailError('Email not recognized. Please enter a valid email address.');
+        return;
       }
 
       if(userData.password !== userData.confirmpassword){
         setPasswordError('Password does not match. Please try again');
+        return;
       }
 
-      if(userData.password < 8){
+      if(userData.password.length < 8){
         setPasswordError('Password must be at least 8 characters long');
+        return;
       }
 
       try{
-          
+
+        const register = await axios.post('http://localhost:3800/api/signup', userData);
+        console.log('User registered', register.data);
+
+        const data = register.data;
+
+        if(register?.data?.success){
+
+          setUserData({
+            lastname: '',
+            firstname: '',
+            email: '',
+            password: '',
+            confirmpassword: ''
+          });
+
+            Swal.fire({
+              title: 'Sign up success',
+              text: 'Press OK to proceed.',
+              icon: 'success',
+              confirmButtonText: 'OK'
+          }).then((result) => {
+              if(result.isConfirmed){
+                navigate('/signin')
+            }
+          });
+        }
+        
+        else{
+          setError(data.message);
+        }
       }
       catch(err){
-
+        if (err.response && err.response.status === 400) {
+          setEmailError(err.response.data.message);
+      } else {
+          console.error('Sign up failed. Something went wrong');
       }
-
+    }
   }
 
   
@@ -102,44 +146,71 @@ const SignUp = () => {
               <div className='h-px w-full border border-accent-color'></div>
           </div>
 
-          <form className='w-full z-100'>
+          <form className='w-full z-100' onSubmit={handleSubmit}>
 
-              <div className='mt-4 flex flex-col sm:flex-row gap-5'>
-                <input type="text"
-                name='firstname'
-                placeholder='First name'
-                className='placeholder-text-color text-sm md:text-md lg:text-base text-text-color p-2 outline-none border border-main-color w-full max-w-xl rounded-md'
-                />
-                <input type="text"
-                name='lastname'
-                placeholder='Last name'
-                className='placeholder-text-color text-sm md:text-md lg:text-base text-text-color p-2 outline-none border border-main-color w-full max-w-xl rounded-md'
-                />
+              <div className='pt-5 flex flex-col items-center sm:flex-row gap-x-5'>
+              
+                <div className='w-full flex flex-col my-2 relative'>
+                  {firstnameError && <p className='text-sm text-red-500 absolute -top-5'>{firstnameError}</p>}
+                    <input type="text"
+                    name='firstname'
+                    id='firstname'
+                    value={userData.firstname}
+                    onChange={handleChange}
+                    placeholder='First name'
+                    className={`placeholder-text-color text-sm md:text-md lg:text-base text-text-color p-2 outline-none border border-main-color w-full max-w-xl rounded-md ${firstnameError && !namesValidation.test(userData.firstname) ? 'border-red-500' : ''}`}
+                    />
+                </div>
+
+                  
+                <div className='flex flex-col items-center w-full my-2 relative'>
+                  {lastnameError && <p className='text-sm text-red-500 absolute -top-5'>{lastnameError}</p>}
+                    <input type="text"
+                    name='lastname'
+                    id='lastname'
+                    value={userData.lastname}
+                    onChange={handleChange}
+                    placeholder='Last name'
+                    className={`placeholder-text-color text-sm md:text-md lg:text-base text-text-color p-2 outline-none border border-main-color w-full max-w-xl rounded-md ${lastnameError && !namesValidation.test(userData.lastname) ? 'border-red-500' : ''}`}
+                    />
+                </div>
+
               </div>
 
-              <div className='mt-4'>
+              <div className='my-4 relative'>
+                {emailError && <p className='text-sm text-red-500 absolute -top-5'>{emailError}</p>}
                 <input type="email"
                 name='email'
+                id='email'
+                value={userData.email}
+                onChange={handleChange}
                 required
                 placeholder='Email' 
-                className='placeholder-text-color text-sm md:text-md lg:text-base text-text-color p-2 outline-none border border-main-color w-full max-w-xl rounded-md'
+                className={`placeholder-text-color text-sm md:text-md lg:text-base text-text-color p-2 outline-none border border-main-color w-full max-w-xl rounded-md ${emailError ? 'border-red-500': ''}`}
                 />
               </div>
 
               <div className='flex flex-col sm:flex-row gap-5 mt-4'>
                 <input type="password"
                 name='password'
+                id='password'
+                value={userData.password}
+                onChange={handleChange}
                 placeholder='Password'
-                className='placeholder-text-color text-sm md:text-md lg:text-base text-text-color p-2 outline-none border border-main-color w-full max-w-xl rounded-md'
+                className={`placeholder-text-color text-sm md:text-md lg:text-base text-text-color p-2 outline-none border border-main-color w-full max-w-xl rounded-md ${passwordError ? 'border-red-500': ''}`}
                 />
+                {passwordError && <p>{passwordError}</p>}
                 <input type="password"
                 name='confirmpassword'
+                id='confirmpassword'
+                value={userData.confirmpassword}
+                onChange={handleChange}
                 placeholder='Confirm Password'
                 className='placeholder-text-color text-sm md:text-md lg:text-base text-text-color p-2 outline-none border border-main-color w-full max-w-xl rounded-md' />
               </div>
               
-              <div className='mt-5'>
-                <a href="" className='text-text-color hover:text-accent-color text-sm underline flex justify-end'>Forgot Password?</a>
+              <div className='mt-5 text-right'>
+                <a href="/signin" className='text-text-color hover:text-accent-color text-sm underline'>Forgot Password?</a>
                 <button className=' m-1 p-3 w-full text-sm md:text-md lg:text-base bg-accent-color text-text-color rounded-md hover:opacity-90 cursor-pointer'>
                     Submit
                 </button>
