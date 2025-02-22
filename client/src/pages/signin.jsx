@@ -44,7 +44,7 @@ const SignIn = () => {
           })
 
           Swal.fire({
-            title: 'Login successfull!',
+            title: 'Login successfull',
             text: 'Click the OK button to continue.',
             icon: 'success',
             confirmButtonText: 'OK',

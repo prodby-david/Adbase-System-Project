@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import { NavLink } from 'react-router-dom';
+
 
 const Navigation = () => {
 
@@ -20,28 +22,27 @@ const Navigation = () => {
         <div className={`absolute top-full left-0 w-full bg-darkmode-bg md:bg-transparent text-white md:text-font-color1 md:flex md:relative md:w-auto md:items-center ${isOpen ? 'block ' : 'hidden'}`}>
             <ul className='flex items-center'>
                 <li className='p-4'>
-                    <a href="" className='text-accent-color hover:text-text-color'>Home</a>
+                    <NavLink to={'/'} className={({isActive}) => `${isActive ? 'text-text-color' : ''} text-bg-color `}>Home</NavLink>
                 </li>
 
                 <li className='p-4'>
-                    <a href="" className='text-accent-color hover:text-text-color'>About us</a>
+                    <NavLink to={'/about'} className={({isActive}) => `${isActive ? 'text-text-color' : ''} text-bg-color `}>About us</NavLink>
                 </li>
 
                 <li className='p-4'>
-                    <a href="" className='text-accent-color hover:text-text-color'>Products</a>
+                    <NavLink to={'/products'} className={({isActive}) => `${isActive ? 'text-text-color ' : ''} text-bg-color `}>Products</NavLink>
                 </li>
 
                 <li className='p-4'>
-                    <a href="" className='text-accent-color hover:text-text-color'>Contacts</a>
+                    <NavLink to={'/contacts'} className={({isActive}) => `${isActive ? 'text-text-color ' : ''} text-bg-color `}>Contacts</NavLink>
                 </li>
 
             </ul>
         </div>
-      
+        
+    
 
-        <div className='hidden md:block'>
-            <a href="/signup" className='p-4 bg-accent-color text-text-color rounded-md cursor-pointer hover:opacity-90'>Order Now</a>
-        </div>
+        
     </div>
   )
 }

@@ -1,19 +1,23 @@
 import React from 'react'
+import Navigation from '../components/navigation';
 
 const About = () => {
   return (
-    <div className='flex flex-col min-h-screen bg-main-color'>
+      <>
+
+        <Navigation />
+      <div className='flex flex-col min-h-screen py-15 bg-main-color'>
 
         <div className='mt-10 text-center'>
             <h2 className='text-3xl text-bg-color font-lora'>About us</h2>
             <p className='text-sm text-accent-color'>Knowing more about us</p>
         </div>
-        
-    
+
+
         <div className='flex items-center justify-center gap-x-20 mt-20'>
 
             <div>
-             <img src="about-img.avif" alt="cookies-image" width={280} className='rounded-md shadow-sm shadow-orange-200'/>
+              <img src="about-img.avif" alt="cookies-image" width={280} className='rounded-md shadow-sm shadow-orange-200'/>
             </div>
 
             <div>
@@ -21,8 +25,10 @@ const About = () => {
             </div>
             
         </div>
-        
-    </div>
+
+      </div>
+    </>
+      
   )
 }
 
