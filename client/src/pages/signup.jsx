@@ -90,7 +90,7 @@ const SignUp = () => {
 
             Swal.fire({
               title: 'Sign up success',
-              text: 'Press OK to proceed.',
+              text: 'Press the OK button to proceed.',
               icon: 'success',
               confirmButtonText: 'OK'
           }).then((result) => {
@@ -190,23 +190,29 @@ const SignUp = () => {
                 />
               </div>
 
-              <div className='flex flex-col sm:flex-row gap-5 mt-4'>
-                <input type="password"
-                name='password'
-                id='password'
-                value={userData.password}
-                onChange={handleChange}
-                placeholder='Password'
-                className={`placeholder-text-color text-sm md:text-md lg:text-base text-text-color p-2 outline-none border border-main-color w-full max-w-xl rounded-md ${passwordError ? 'border-red-500': ''}`}
-                />
-                {passwordError && <p>{passwordError}</p>}
-                <input type="password"
-                name='confirmpassword'
-                id='confirmpassword'
-                value={userData.confirmpassword}
-                onChange={handleChange}
-                placeholder='Confirm Password'
-                className='placeholder-text-color text-sm md:text-md lg:text-base text-text-color p-2 outline-none border border-main-color w-full max-w-xl rounded-md' />
+              <div className='flex flex-col sm:flex-row gap-5 mt-8 relative'>
+                <div className='w-full'>
+                  <input type="password"
+                  name='password'
+                  id='password'
+                  value={userData.password}
+                  onChange={handleChange}
+                  placeholder='Password'
+                  className={`placeholder-text-color text-sm md:text-md lg:text-base text-text-color p-2 outline-none border border-main-color w-full max-w-xl rounded-md ${passwordError ? 'border-red-500': ''}`}
+                  />
+                  {passwordError && <p className='text-sm text-red-500 absolute -top-5'>{passwordError}</p>}
+                </div>
+                
+                <div className='w-full'>
+                  <input type="password"
+                  name='confirmpassword'
+                  id='confirmpassword'
+                  value={userData.confirmpassword}
+                  onChange={handleChange}
+                  placeholder='Confirm Password'
+                  className={`placeholder-text-color text-sm md:text-md lg:text-base text-text-color p-2 outline-none border border-main-color w-full max-w-xl rounded-md ${passwordError ? 'border-red-500': ''}`} />
+                </div>
+                
               </div>
               
               <div className='mt-5 text-right'>
