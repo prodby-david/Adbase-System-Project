@@ -19,7 +19,9 @@ const Navigation = () => {
     <div className='flex items-center justify-around py-3 shadow-sm w-full fixed top-0 left-0 z-20 bg-main-color' data-aos="fade-down" data-aos-duration="2000">
 
         <div>
-            <h2>Logo</h2>
+            <a href="/">
+                <img src="logo.png" alt="" width={50}  className='cursor-pointer'/>
+            </a>
         </div>
 
         <div className={`absolute top-full left-0 w-full md:flex md:relative md:w-auto md:items-center overflow-hidden transition-all duration-500 ease-in-out   ${isOpen ? "max-h-[350px] opacity-100" : "max-h-0 opacity-0 md:max-h-full md:opacity-100"}`}>
