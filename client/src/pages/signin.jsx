@@ -3,6 +3,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faCookieBite, faChevronLeft} from "@fortawesome/free-solid-svg-icons";
 import axios from 'axios';
 import Swal from 'sweetalert2'
+import { useNavigate } from 'react-router-dom';
+import { useAuthContext } from '../context/authContext';
 
 const SignIn = () => {
 
@@ -11,9 +13,13 @@ const SignIn = () => {
         password: ''
   });
 
+  const { Login: setUser } = useAuthContext();
+
   const [error, setError] = useState('');
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
+
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
 
@@ -36,6 +42,8 @@ const SignIn = () => {
     try{
         const login = await axios.post('http://localhost:3800/api/signin', userData, {withCredentials: true});
 
+        setUser(userData);
+
         if(login?.data?.success){
 
           setUserData({
@@ -48,7 +56,11 @@ const SignIn = () => {
             text: 'Click the OK button to continue.',
             icon: 'success',
             confirmButtonText: 'OK',
+          }).then(() => {
+            navigate('/dashboard');
           });
+
+          
         }
   }
     catch(err){

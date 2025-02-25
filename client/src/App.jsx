@@ -7,6 +7,9 @@ import SignIn from './pages/signin';
 import SignUp from './pages/signup';
 import Error from './pages/error';
 import About from './pages/about';
+import Dashboard from './pages/dashboard';
+import { AuthProvider } from './context/authContext';
+import ProtectedRoute from './router/protectedRoute';
 
 
 function App() {
@@ -17,15 +20,25 @@ function App() {
 
 
   return (
-      <Router>
-        <Routes>
-          <Route path='*' element={<Error />} />
-          <Route path='/' element={<LandingPage />} />
-          <Route path='/about' element={<About />} />
-          <Route path='/signin' element={<SignIn />} />
-          <Route path='/signup' element={<SignUp />} />
-        </Routes>
-      </Router>
+
+      <AuthProvider>
+          <Router>
+            <Routes>
+              <Route path='*' element={<Error />} />
+              <Route path='/' element={<LandingPage />} />
+              <Route path='/about' element={<About />} />
+              <Route path='/signin' element={<SignIn />} />
+              <Route path='/signup' element={<SignUp />} />
+              <Route path='/dashboard'
+               element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>} 
+                />
+            </Routes>
+          </Router>
+      </AuthProvider>
+
   )
 }
 
