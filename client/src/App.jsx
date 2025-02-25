@@ -10,6 +10,7 @@ import About from './pages/about';
 import Dashboard from './pages/dashboard';
 import { AuthProvider } from './context/authContext';
 import ProtectedRoute from './router/protectedRoute';
+import AdminRegistration from './pages/admin';
 
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
               <Route path='/about' element={<About />} />
               <Route path='/signin' element={<SignIn />} />
               <Route path='/signup' element={<SignUp />} />
+              <Route path='/admin-registration' element={<AdminRegistration />} />              
               <Route path='/dashboard'
                element={
                 <ProtectedRoute>

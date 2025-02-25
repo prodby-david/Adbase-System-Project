@@ -22,7 +22,7 @@ const About = () => {
             </div>
 
             <div data-aos="fade-left" data-aos-duration="2000" data-aos-delay="800">
-                <p className='w-full max-w-xs text-text-color text-justify'>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Rem explicabo labore laudantium, architecto laborum obcaecati modi quaerat quod, cumque culpa voluptates nisi ratione. At ad quae nobis animi, labore consectetur? Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fuga, iure. Ducimus libero sed architecto corrupti ipsam reiciendis ad, laudantium, a quo mollitia in accusantium ullam neque nisi ab beatae. Cum. Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum, commodi! Ad delectus fuga veniam ducimus quo non in quis quas ex, dolores dolorum minus architecto, autem libero ab unde atque? lorem.</p>
+                <p className='w-full max-w-xs text-text-color text-justify mt-3'>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Rem explicabo labore laudantium, architecto laborum obcaecati modi quaerat quod, cumque culpa voluptates nisi ratione. At ad quae nobis animi, labore consectetur? Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fuga, iure. Ducimus libero sed architecto corrupti ipsam reiciendis ad, laudantium, a quo mollitia in accusantium ullam neque nisi ab beatae. Cum. Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum, commodi! Ad delectus fuga veniam ducimus quo non in quis quas ex, dolores dolorum minus architecto, autem libero ab unde atque? lorem.</p>
             </div>
             
         </div>

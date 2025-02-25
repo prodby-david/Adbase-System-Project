@@ -37,11 +37,11 @@ const Navigation = () => {
                 </li>
 
                 <li className='p-4' onClick={navController}>
-                    <NavLink to={'/products'} className={({isActive}) => `${isActive ? 'text-text-color ' : ''} text-bg-color hover:text-accent-color`}>Products</NavLink>
+                    <NavLink to={'/products'} className={({isActive}) => `${isActive ? 'text-text-color ' : ''} text-bg-color hover:text-accent-color`}>Feedback</NavLink>
                 </li>
 
                 <li className='p-4' onClick={navController}>
-                    <NavLink to={'/contacts'} className={({isActive}) => `${isActive ? 'text-text-color ' : ''} text-bg-color hover:text-accent-color`}>Contacts</NavLink>
+                    <NavLink to={'/contacts'} className={({isActive}) => `${isActive ? 'text-text-color ' : ''} text-bg-color hover:text-accent-color`}>FAQ</NavLink>
                 </li>
 
             </ul>

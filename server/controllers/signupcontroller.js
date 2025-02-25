@@ -17,7 +17,7 @@ const signUpController = async (req,res) => {
         return res.status(201).json({message: 'Sign up success', success: true});
 
     }catch(err){
-        res.status(400).json({message: 'Sign up failed. Please try again'});
+        res.status(400).json({message: 'Sign up failed. Please try again', err});
     }   
 }
 
