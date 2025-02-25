@@ -39,6 +39,7 @@ const SignUp = () => {
   }
 
   const handleSubmit = async (e) => {
+    
       e.preventDefault();
 
       setFirstnameError('');
@@ -190,7 +191,7 @@ const SignUp = () => {
                 />
               </div>
 
-              <div className='flex flex-col sm:flex-row gap-5 mt-8 relative'>
+              <div className='flex flex-col sm:flex-row gap-5 mt-5 relative'>
                 <div className='w-full'>
                   <input type="password"
                   name='password'
