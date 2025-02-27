@@ -1,16 +1,26 @@
 import mongoose from 'mongoose'
+import bcrypt from 'bcryptjs';
 
 
 const adminSchema = mongoose.Schema({
-    admin_user:{
+    adminusername:{
+        type: String,
+        required: true,
+    },
+    adminpassword:{
         type: String,
         required: true
-    },
-    admin_passwrd:{
-        type: String,
-        required: true
-    },
-})
+    }
+});
+
+adminSchema.pre('save', async function (next) {
+    
+    if (this.isModified('adminpassword')){
+        const salt = await bcrypt.genSalt(10);
+        this.adminpassword = await bcrypt.hash(this.adminpassword, salt);
+    }
+    next();
+});
 
 const Admin = mongoose.model('Admin', adminSchema);
 
