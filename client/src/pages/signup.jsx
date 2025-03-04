@@ -217,7 +217,6 @@ const SignUp = () => {
               </div>
               
               <div className='mt-5 text-right'>
-                <a href="/signin" className='text-text-color hover:text-accent-color text-sm underline'>Forgot Password?</a>
                 <button className=' m-1 p-3 w-full text-sm md:text-md lg:text-base bg-accent-color text-text-color rounded-md hover:opacity-90 cursor-pointer'>
                     Submit
                 </button>

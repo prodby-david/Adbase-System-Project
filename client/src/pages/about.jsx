@@ -10,8 +10,8 @@ const About = () => {
       <div className='flex flex-col min-h-screen py-15 px-5 bg-bg-color'>
 
         <div className='mt-10 text-center' data-aos="fade-down" data-aos-duration="2000" data-aos-delay="800">
-            <h2 className='text-3xl text-text-color font-lora'>About us</h2>
-            <p className='text-sm text-accent-color'>Knowing more about us</p>
+            <h2 className='text-3xl text-accent-color font-lora'>About us</h2>
+            <p className='text-sm text-text-color'>Knowing more about us</p>
         </div>
 
 

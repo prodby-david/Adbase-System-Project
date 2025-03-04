@@ -1,0 +1,123 @@
+import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
+import DashNavigation from '../../components/dashnav';
+
+const FeedbackForm = () => {
+
+  const [userFeedbackData, setUserFeedbackData] = useState({
+    fullname: '',
+    email: '',
+    comment: ''
+  });
+
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+
+    const {name, value} = e.target;
+    setUserFeedbackData({...userFeedbackData, [name]: value});
+}
+
+  const feedbackClicked = (e) => {
+
+    e.preventDefault();
+
+    const { fullname, email, comment } = userFeedbackData;
+
+    if (!fullname || !comment || !email) {
+
+      Swal.fire({
+        title: 'Submission failed',
+        text: 'All fields are required.',
+        icon: 'error',
+        confirmButtonText: 'OK',
+      });
+
+      return; 
+    }
+
+    const feedbackList = JSON.parse(localStorage.getItem('userfeedback')) || [];
+    feedbackList.push({ fullname, email, comment });
+    localStorage.setItem('userfeedback', JSON.stringify(feedbackList));
+
+    Swal.fire({
+      title: 'Feedback submitted.',
+      text: 'Press the button to continue.',
+      icon: 'success',
+      confirmButtonText: 'Return to dashboard'
+    }).then((result) => {
+      if(result.isConfirmed){
+        navigate('/dashboard');
+      }
+    });
+}
+
+
+  return (
+
+    <>
+
+    <DashNavigation />
+
+    <div className='flex flex-col items-center justify-center gap-y-5 min-h-screen px-5'>
+
+        <span className='text-2xl text-accent-color font-semibold'>How was your experience?</span>
+
+        <div className='flex flex-col items-center border border-main-color shadow-md p-5 rounded-md w-full max-w-xl'>
+  
+          <form className='w-full flex flex-col gap-5 p-2' onSubmit={feedbackClicked}>
+            
+            <div className='flex flex-col gap-y-1'>
+              <label htmlFor="Name" className='text-text-color text-sm'>Full name</label>
+              <input type="text" 
+              name='fullname' 
+              id='Name'
+              className='w-full border border-main-color outline-0 p-2 rounded-md text-sm focus:border-accent-color' 
+              placeholder='Full name'
+              onChange={handleChange}
+              value={userFeedbackData.fullname} 
+              />
+            </div>
+
+            <div className='flex flex-col gap-y-1'>
+              <label htmlFor="Email" className='text-text-color text-sm'>Email</label>
+              <input type="email" 
+              name='email' 
+              id='Email'
+              className='w-full border border-main-color outline-0 p-2 rounded-md text-sm focus:border-accent-color'  
+              placeholder='Email'
+              onChange={handleChange}
+              value={userFeedbackData.email}
+              />
+            </div>
+
+            <div className='flex flex-col gap-y-1'>
+              <label htmlFor="" className='text-text-color text-sm'>Comment</label>
+              <textarea 
+              name="comment" 
+              id="Comment" 
+              className='w-full border border-main-color outline-0 p-2 text-text-color rounded-md h-40 max-h-50 resize-none text-sm focus:border-accent-color' 
+              placeholder='Leave your comment here...'
+              onChange={handleChange}
+              value={userFeedbackData.comment}>
+      
+              </textarea>
+            </div>
+
+            <button className='bg-accent-color p-3 rounded-md text-text-color text-sm cursor-pointer opacity-90 hover:opacity-100'>
+              Submit
+            </button>
+
+          </form>
+
+
+        </div>
+      
+    </div>
+
+    </>
+  )
+}
+
+export default FeedbackForm;

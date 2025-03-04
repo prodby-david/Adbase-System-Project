@@ -40,9 +40,10 @@ const SignIn = () => {
     }
 
     try{
+      
         const login = await axios.post('http://localhost:3800/api/signin', userData, {withCredentials: true});
 
-        setUser(userData);
+        setUser(userData.email);
 
         if(login?.data?.success){
 

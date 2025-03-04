@@ -37,7 +37,7 @@ const Navigation = () => {
                 </li>
 
                 <li className='p-4' onClick={navController}>
-                    <NavLink to={'/products'} className={({isActive}) => `${isActive ? 'text-text-color ' : ''} text-bg-color hover:text-accent-color`}>Feedback</NavLink>
+                    <NavLink to={'/feedback'} className={({isActive}) => `${isActive ? 'text-text-color ' : ''} text-bg-color hover:text-accent-color`}>Feedback</NavLink>
                 </li>
 
                 <li className='p-4' onClick={navController}>
