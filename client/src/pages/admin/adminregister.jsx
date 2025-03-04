@@ -75,7 +75,7 @@ const AdminRegistration = () => {
   return (
     <div className='flex items-center justify-center min-h-screen px-5'>
 
-        <div className='flex flex-col items-center border border-accent-color p-10 rounded-md w-full max-w-md shadow-md'>
+        <div className='flex flex-col items-center p-10 rounded-md w-full max-w-md shadow-lg'>
 
             <h2 className='text-xl font-semibold text-accent-color'>Admin Registration</h2>
 

@@ -64,7 +64,7 @@ const AdminLogin = () => {
 
     <div className='flex items-center justify-center min-h-screen px-5'>
 
-      <div className='flex items-center flex-col border gap-y-10 border-accent-color p-10 rounded-md w-full max-w-md shadow-md'>
+      <div className='flex items-center flex-col gap-y-10 p-10 rounded-md w-full max-w-md shadow-lg'>
 
         <h2 className='text-xl text-accent-color font-semibold'>Admin Sign In</h2>
 
