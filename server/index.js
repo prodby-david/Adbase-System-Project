@@ -7,7 +7,6 @@ import signUpRouter from './routers/signup.js';
 import signInRouter from './routers/signin.js';
 import AdminRouter from './routers/admin-register.js';
 import AdminLoginRouter from './routers/admin-login.js';
-import UserRouter from './routers/user-route.js';
 
 dotenv.config();
 
@@ -19,7 +18,6 @@ app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors({origin: 'http://localhost:5173' , credentials: true}));
 
-app.use(UserRouter);
 
 app.use(signUpRouter);
 app.use(signInRouter);

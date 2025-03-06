@@ -5,6 +5,9 @@ const Dashboard = () => {
   return (
     <div>
       <DashNavigation />
+      <div>
+        <h2>Sample Dashboard</h2>
+      </div>
     </div>
   )
 }

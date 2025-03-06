@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTimes, faArrowRightLong, faComments, faHouse, faCartShopping, faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
+import { faTimes, faArrowRightLong, faComments, faHouse, faCartShopping, faRightFromBracket, faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { useAuthContext } from '../context/authContext';
@@ -8,9 +8,18 @@ import { useAuthContext } from '../context/authContext';
 const DashNavigation = () => {
 
     const [isOpen, setOpen] = useState(false);
-    const { user } = useAuthContext();
+    const [user, setUser] = useState({ firstname: '', lastname: '', email: '' });
+    const { Logout } = useAuthContext();
 
     const navigate = useNavigate();
+
+    useEffect(() => {
+      const storedUser = JSON.parse(localStorage.getItem('client-user'));
+      if (storedUser) {
+        setUser(storedUser);
+      }
+    }, []);
+  
 
     const navController = () => {
         setOpen(false);
@@ -28,25 +37,27 @@ const DashNavigation = () => {
           denyButtonText: 'No',
         }).then((result) => {
           if(result.isConfirmed){
-            localStorage.removeItem('token');
-            localStorage.removeItem('client');
+            Logout();
             navigate('/');
           }
         });
       }
 
 
+
+
   return (
 
     <>
-        <div className={`fixed flex flex-col gap-3 h-full w-[320px] bg-accent-color ${isOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-500 z-50 dark:shadow-lg}`}>
-          {user ? (
-              <div>
-                <p>Welcome, {user.name}</p>
-              </div>
-          ) : (<p>Login</p>)}
+        <div className={`fixed flex flex-col justify-center gap-y-20 h-full w-[320px] bg-accent-color ${isOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-500 z-50 dark:shadow-lg}`}>
 
-            <ul className='flex flex-col items-center my-auto w-full'>
+            <div className='flex flex-col items-center p-5 text-text-color w-full'>
+              <FontAwesomeIcon icon={faUserCircle} className='text-6xl'/>
+              <p className='text-lg'>{user.firstname} {user.lastname}</p>
+              <p className='text-sm'>{user.email}</p>
+            </div>
+    
+            <ul className='flex flex-col items-center w-full'>
 
                 <li className='flex flex-col items-center hover:bg-main-color p-5 w-full border-b border-t' onClick={navController}>
                     <a href="/dashboard" onClick={navController}><FontAwesomeIcon icon={faHouse} className='mr-1'/>Dashboard</a>
