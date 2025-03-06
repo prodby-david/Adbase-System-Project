@@ -11,6 +11,7 @@ const AdminLogin = () => {
     adminpassword: ''
   });
 
+  const [error, setError] = useState('');
   const [userError, setUserError] = useState('');
   const [passError, setPasswordError] = useState('');
 
@@ -25,9 +26,13 @@ const AdminLogin = () => {
     setPasswordError('');
   }
 
+
   const handleSubmit = async (e) => {
 
     e.preventDefault();
+
+    setUserError('');
+    setPasswordError('');
 
     if(!adminData.adminusername || !adminData.adminpassword){
       setUserError('Username and password are required');
@@ -36,7 +41,7 @@ const AdminLogin = () => {
 
     try {
 
-      const adminLogin = await axios.post('http://localhost:3800/api/admin', adminData);
+      const adminLogin = await axios.post('http://localhost:3800/api/admin', adminData, {withCredentials: true});
 
       if(adminLogin?.data?.success){
         setAdminData({
@@ -44,6 +49,11 @@ const AdminLogin = () => {
           adminpassword: ''
         });
 
+        localStorage.setItem('admin', JSON.stringify({
+          adminusername: adminData.adminusername,
+          adminpassword: adminData.adminpassword
+        }));
+        
         Swal.fire({
           title: 'Login successful',
           text: 'Click OK to continue',
@@ -56,7 +66,18 @@ const AdminLogin = () => {
 
     }
     catch (err) {
-      console.log(err);
+
+      if (err.response && err.response.data.message) {
+        if (err.response.data.message.includes('Admin username not found')) {
+          setUserError('Admin username does not exist');
+        } else if (err.response.data.message.includes('Incorrect password')) {
+          setPasswordError('Incorrect password. Please try again');
+        } else {
+          setUserError('Login failed. Please try again.');
+        } 
+      } else {
+        setError('Something went wrong. Please try again later.');
+      }
     }
   }
 
@@ -71,24 +92,27 @@ const AdminLogin = () => {
         <form className='flex flex-col items-center gap-y-5 w-full' onSubmit={handleSubmit}>
 
           <input type="text"
-          name="adminusername"
-          required
+          name="adminusername" 
           value={adminData.adminusername}
           onChange={handleChange}
           placeholder='Username'
-          className='p-3 w-full border-0 border-b border-main-color outline-0 text-sm'
+          className={`p-3 w-full border-0 border-b border-main-color outline-0 text-sm ${userError && 'border-red-500'}`}
           />
 
+          
           <input type="password"
           name="adminpassword"
-          required
           value={adminData.adminpassword}
           onChange={handleChange}
           placeholder='Password'
-          className='p-3 w-full border-0 border-b border-main-color outline-0 text-sm'
+          className={`p-3 w-full border-0 border-b border-main-color outline-0 text-sm ${passError && 'border-red-500'}`}
           />
 
-          <button className='text-md p-3 mt-10 bg-accent-color hover:opacity-100 opacity-90 w-[130px] rounded-md text-text-color cursor-pointer'>Sign In
+          {userError && <p className='text-red-500 text-sm'>{userError}</p>}
+          {passError && <p className='text-red-500 text-sm'>{passError}</p>}
+          {error && <p className='text-red-500 text-sm'>{error}</p>}
+
+          <button className='text-md p-3 mt-6 bg-accent-color hover:opacity-100 opacity-90 w-[130px] rounded-md text-text-color cursor-pointer'>Sign In
           </button>
             
         </form>

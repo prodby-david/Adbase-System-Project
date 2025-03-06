@@ -37,7 +37,8 @@ AdminLoginRouter.post('/api/admin', async (req,res) => {
         res.status(200).json({ success: true, message: 'Login successful', token });
     }
     catch(err) {
-        res.status(500).json({message: 'Please try again later.'});
+        console.error("Login error:", err);
+        res.status(400).json({message: 'Please try again later.'});
     }
 });
 

@@ -26,6 +26,7 @@ const SignIn = () => {
       const {name, value} = e.target;
       setUserData({...userData, [name]: value});
 
+      setError('');
       setEmailError('');
       setPasswordError('');
   }
@@ -33,6 +34,10 @@ const SignIn = () => {
   const handleSubmit = async (e) => {
 
     e.preventDefault();
+
+      setError('');
+      setEmailError('');
+      setPasswordError('');
 
     if(!userData.email || !userData.password){
         setError('Both field required')
@@ -43,14 +48,10 @@ const SignIn = () => {
       
         const login = await axios.post('http://localhost:3800/api/signin', userData, {withCredentials: true});
 
-        setUser(userData.email);
+        setUser(login.data);
 
         if(login?.data?.success){
 
-          setUserData({
-            email: '',
-            password: ''
-          })
 
           Swal.fire({
             title: 'Login successfull',
@@ -63,26 +64,26 @@ const SignIn = () => {
 
           
         }
-  }
-    catch(err){
-
-      console.error("Login error:", err);
-
-      if(err?.response?.data?.message){
-
-        const message = err?.response?.data?.message;
-
-        if(message.includes("Email doesn't exist.")){
-          setEmailError("Email doesn't exist.");
-        }else if(message.includes('Incorrect password.')){
-            setPasswordError('Incorrect password. Please try again.');
-        }else{
-          setError('An unexpected error occured.');
-        }
-         }
- 
       }
+      catch(err) {
+        
+        console.error("Login error:", err);
 
+        if (err?.response?.data?.message) {
+
+            const message = err.response.data.message;
+
+            if (message.includes("Email doesn't exist.")) {
+                setEmailError("Email doesn't exist.");
+            } else if (message.includes("Incorrect password")) {
+                setPasswordError("Incorrect password. Please try again.");
+            } else {
+                setError("An unexpected error occurred.");
+            }
+        } else {
+            setError("An unexpected error occurred.");
+        }
+    }
   }
 
 
@@ -123,7 +124,9 @@ const SignIn = () => {
             <form className='w-full z-100 mt-5' onSubmit={handleSubmit}>
 
                 <div className='mt-4'>
-                  
+
+                {error && <p className="text-red-500 text-sm text-center mb-3">{error}</p>}
+
                   <input type="email"
                   name='email'
                   id='email'
@@ -136,7 +139,7 @@ const SignIn = () => {
                   {emailError && <p className='text-red-500 text-sm'>{emailError}</p>}
                 </div>
 
-                <div className='flex flex-col sm:flex-row gap-5 mt-4'>
+                <div className='mt-4'>
                   <input type="password"
                   name='password'
                   id='password'
@@ -149,7 +152,7 @@ const SignIn = () => {
                 </div>
                 
                 <div className='mt-5'>
-                  <a href="" className='text-text-color text-sm underline flex justify-end hover:text-accent-color'>Forgot Password?</a>
+                  <a href="/forgot-password" className='text-text-color text-sm underline flex justify-end hover:text-accent-color'>Forgot Password?</a>
                   <button className=' m-1 p-3 w-full text-sm md:text-md lg:text-base bg-accent-color text-text-color rounded-md hover:opacity-90 cursor-pointer'>
                       Submit
                   </button>

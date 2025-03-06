@@ -15,6 +15,10 @@ import AdminLogin from './pages/admin/adminlogin';
 import AdminDashboard from './pages/admin/admin-dashboard';
 import Feedback from './pages/feedback';
 import FeedbackForm from './pages/user/feedbackform';
+import ForgotPassword from './pages/forgotpassword';
+import DashNavigation from './components/dashnav';
+import { AdminContextProvider } from './context/adminContext';
+import AdminRoute from './router/adminRoute';
 
 
 function App() {
@@ -25,7 +29,7 @@ function App() {
 
 
   return (
-
+    
       <AuthProvider>
           <Router>
             <Routes>
@@ -38,6 +42,7 @@ function App() {
               <Route path='/feedback' element={<Feedback />} />
               <Route path='/signin' element={<SignIn />} />
               <Route path='/signup' element={<SignUp />} />
+              <Route path='/forgot-password' element={<ForgotPassword />} />
 
               {/* User Routes */}
               <Route path='/user-feedback'
@@ -52,13 +57,16 @@ function App() {
               <Route path='/admin' element={<AdminLogin />} />   
               <Route path='/admin-dashboard' 
               element={
-                <ProtectedRoute>
-                  <AdminDashboard />
-                </ProtectedRoute>} 
+                <AdminContextProvider>
+                  <AdminRoute>
+                    <AdminDashboard />
+                  </AdminRoute>
+                </AdminContextProvider>} 
                 />
               <Route path='/dashboard'
                element={
                 <ProtectedRoute>
+                  <DashNavigation />
                   <Dashboard />
                 </ProtectedRoute>} 
                 />
@@ -66,7 +74,7 @@ function App() {
             </Routes>
           </Router>
       </AuthProvider>
-
+   
   )
 }
 

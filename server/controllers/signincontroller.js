@@ -32,10 +32,15 @@ const signInController = async (req,res) => {
             sameSite: 'Strict'
         });
 
-        res.status(200).json({message: 'Logged in successfully', success: true});
+        res.status(200).json({message: 'Logged in successfully', success: true, user:{
+                firstname: user.firstname, 
+                lastname: user.lastname,
+                email: user.email
+        }});
     }
     catch(err){
         res.status(500).json({message: 'Please try again later.'});
+        
     }
 
 }
