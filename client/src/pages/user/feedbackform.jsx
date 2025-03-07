@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import axios from 'axios';
 import DashNavigation from '../../components/dashnav';
 
 const FeedbackForm = () => {
@@ -19,7 +20,7 @@ const FeedbackForm = () => {
     setUserFeedbackData({...userFeedbackData, [name]: value});
 }
 
-  const feedbackClicked = (e) => {
+  const feedbackClicked = async (e) => {
 
     e.preventDefault();
 
@@ -37,20 +38,32 @@ const FeedbackForm = () => {
       return; 
     }
 
-    const feedbackList = JSON.parse(localStorage.getItem('userfeedback')) || [];
-    feedbackList.push({ fullname, email, comment });
-    localStorage.setItem('userfeedback', JSON.stringify(feedbackList));
+    try {
 
-    Swal.fire({
-      title: 'Feedback submitted.',
-      text: 'Press the button to continue.',
-      icon: 'success',
-      confirmButtonText: 'Return to dashboard'
-    }).then((result) => {
-      if(result.isConfirmed){
-        navigate('/dashboard');
-      }
-    });
+       await axios.post('http://localhost:3800/api/user-feedback', userFeedbackData, {withCredentials: true});
+
+       Swal.fire({
+        title: 'Feedback submitted.',
+        text: 'Press the button to continue.',
+        icon: 'success',
+        confirmButtonText: 'Return to dashboard'
+      }).then((result) => {
+        if(result.isConfirmed){
+          navigate('/dashboard');
+        }
+      });
+
+    }catch(err){
+
+      console.error('Error submitting feedback:', err);
+
+      Swal.fire({
+          title: 'Submission failed',
+          text: 'Something went wrong. Please try again later.',
+          icon: 'error',
+          confirmButtonText: 'OK',
+      });
+    }
 }
 
 
