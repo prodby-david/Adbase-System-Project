@@ -1,19 +1,25 @@
 import express from 'express';
 import Feedback from "../models/feedback.js";
+import authToken from '../middleware/authToken.js';
 
 
 const CreateFeedback = express.Router();
 
-CreateFeedback.post('/api/user-feedback', async (req, res) => {
+CreateFeedback.post('/api/user-feedback', authToken, async (req, res) => {
 
-    const { fullname, email, comment } = req.body;
-
-    if (!fullname || !comment || !email) {
-        return res.status(400).json({ message: 'All fields are required.' });
-    }
+    console.log("User data from authToken middleware:", req.user);
 
     try {
+        const userId = req.user.userId;
+        const { fullname, email, comment } = req.body;
+
+        
+        if (!fullname || !email || !comment) {
+            return res.status(400).json({ message: 'All fields are required.' });
+        }
+
         const newFeedback = new Feedback({
+            userId: userId, 
             fullname,
             email,
             comment
@@ -27,5 +33,15 @@ CreateFeedback.post('/api/user-feedback', async (req, res) => {
         res.status(500).json({ message: 'Unexpected error occurred.' });
     }
 });
+
+CreateFeedback.get('/api/user-feedback', async (req, res) => {
+    try {
+        const feedbacks = await Feedback.find().populate('user', 'email');
+        res.json(feedbacks);
+    } catch (error) {
+        res.status(500).json({ message: 'Unexpected error occurred.', error: error.message });
+    }
+});
+
 
 export default CreateFeedback;

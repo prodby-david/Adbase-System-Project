@@ -55,7 +55,7 @@ const FeedbackForm = () => {
 
     }catch(err){
 
-      console.error('Error submitting feedback:', err);
+      console.error('Error submitting feedback:', err.response.data.message);
 
       Swal.fire({
           title: 'Submission failed',
@@ -110,6 +110,7 @@ const FeedbackForm = () => {
               <textarea 
               name="comment" 
               id="Comment" 
+              maxLength={100}
               className='w-full border border-main-color outline-0 p-2 text-text-color rounded-md h-40 max-h-50 resize-none text-sm focus:border-accent-color' 
               placeholder='Leave your comment here...'
               onChange={handleChange}
@@ -118,7 +119,7 @@ const FeedbackForm = () => {
               </textarea>
             </div>
 
-            <button className='bg-accent-color p-3 rounded-md text-text-color text-sm cursor-pointer opacity-90 hover:opacity-100'>
+            <button className='bg-accent-color p-3 rounded-md text-text-color text-sm cursor-pointer opacity-90 hover:opacity-100' type='submit'>
               Submit
             </button>
 

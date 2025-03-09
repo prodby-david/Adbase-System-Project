@@ -2,6 +2,11 @@ import mongoose from 'mongoose';
 
 const userFeedbackSchema = new mongoose.Schema({
 
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+    },
     fullname:{
         type: String,
         required: true
@@ -14,7 +19,7 @@ const userFeedbackSchema = new mongoose.Schema({
         type: String,
         required: true
     }
-});
+}, {timestamps: true});
 
 const Feedback = mongoose.model('Feedback', userFeedbackSchema);
 
