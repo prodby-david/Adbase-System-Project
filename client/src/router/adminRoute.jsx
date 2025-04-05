@@ -9,7 +9,7 @@ const AdminRoute = ({ children }) => {
 
    
     if(!admin){
-        return <Navigate to={"/"} replace />
+        return <Navigate to={"/admin-sign-in"} replace />
     }
 
     return children;

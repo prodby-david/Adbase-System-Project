@@ -13,7 +13,6 @@ CreateFeedback.post('/api/user-feedback', authToken, async (req, res) => {
         const userId = req.user.userId;
         const { fullname, email, comment } = req.body;
 
-        
         if (!fullname || !email || !comment) {
             return res.status(400).json({ message: 'All fields are required.' });
         }
@@ -24,7 +23,7 @@ CreateFeedback.post('/api/user-feedback', authToken, async (req, res) => {
             email,
             comment
         });
-
+        
         await newFeedback.save();
 
         res.status(201).json({ message: 'Feedback submitted.' });
@@ -36,7 +35,7 @@ CreateFeedback.post('/api/user-feedback', authToken, async (req, res) => {
 
 CreateFeedback.get('/api/user-feedback', async (req, res) => {
     try {
-        const feedbacks = await Feedback.find().populate('user', 'email');
+        const feedbacks = await Feedback.find();
         res.json(feedbacks);
     } catch (error) {
         res.status(500).json({ message: 'Unexpected error occurred.', error: error.message });
