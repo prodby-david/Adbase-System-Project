@@ -24,6 +24,8 @@ const AdminLogin = () => {
 
     setUserError('');
     setPasswordError('');
+    setError('');
+    
   }
 
 
@@ -34,8 +36,18 @@ const AdminLogin = () => {
     setUserError('');
     setPasswordError('');
 
-    if(!adminData.adminusername || !adminData.adminpassword){
-      setUserError('Username and password are required');
+    if(!adminData.adminusername && !adminData.adminpassword){
+      setError('Username and password must not be empty.');
+      return;
+    }
+
+    if(!adminData.adminusername){
+      setUserError('Username is required');
+      return;
+    }
+
+    if(!adminData.adminpassword){
+      setPasswordError('Password is required');
       return;
     }
 
@@ -96,7 +108,7 @@ const AdminLogin = () => {
           value={adminData.adminusername}
           onChange={handleChange}
           placeholder='Username'
-          className={`p-3 w-full border-0 border-b border-main-color outline-0 text-sm ${userError && 'border-red-500'}`}
+          className={`p-3 w-full border-0 border-b border-main-color outline-0 text-sm ${userError && 'border-red-500'} ${error && 'border-red-500'}`}
           />
 
           
@@ -105,7 +117,7 @@ const AdminLogin = () => {
           value={adminData.adminpassword}
           onChange={handleChange}
           placeholder='Password'
-          className={`p-3 w-full border-0 border-b border-main-color outline-0 text-sm ${passError && 'border-red-500'}`}
+          className={`p-3 w-full border-0 border-b border-main-color outline-0 text-sm ${passError && 'border-red-500'} ${error && 'border-red-500'}`}
           />
 
           {userError && <p className='text-red-500 text-sm'>{userError}</p>}

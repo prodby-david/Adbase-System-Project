@@ -19,6 +19,7 @@ import ForgotPassword from './pages/forgotpassword';
 import DashNavigation from './components/dashnav';
 import { AdminContextProvider } from './context/adminContext';
 import AdminRoute from './router/adminRoute';
+import FAQ from './pages/faq';
 
 
 function App() {
@@ -40,6 +41,7 @@ function App() {
               <Route path='/' element={<LandingPage />} />
               <Route path='/about' element={<About />} />
               <Route path='/feedback' element={<Feedback />} />
+              <Route path='/faq' element={<FAQ />} />
               <Route path='/signin' element={<SignIn />} />
               <Route path='/signup' element={<SignUp />} />
               <Route path='/forgot-password' element={<ForgotPassword />} />
@@ -54,7 +56,7 @@ function App() {
 
               {/* Admin Routes */}
               <Route path='/admin-registration' element={<AdminRegistration />} />     
-              <Route path='/admin' element={<AdminLogin />} />   
+              <Route path='/admin-sign-in' element={<AdminLogin />} />   
               <Route path='/admin-dashboard' 
               element={
                 <AdminContextProvider>
