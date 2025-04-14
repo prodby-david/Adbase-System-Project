@@ -8,6 +8,10 @@ import signInRouter from './routers/signin.js';
 import AdminRouter from './routers/admin-register.js';
 import AdminLoginRouter from './routers/admin-login.js';
 import CreateFeedback from './routers/create-feedback.js';
+import ForgotPassword from './routers/forgotpassword.js';
+
+
+
 
 dotenv.config();
 
@@ -19,12 +23,8 @@ app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors({origin: 'http://localhost:5173' , credentials: true}));
 
-app.use(signUpRouter);
-app.use(signInRouter);
-app.use(AdminRouter);
-app.use(AdminLoginRouter);
-app.use(CreateFeedback);
-
+//Routers
+app.use(signUpRouter, signInRouter, AdminRouter, AdminLoginRouter, CreateFeedback, ForgotPassword);
 
 app.listen( process.env.PORT, () => {
     console.log(`Server is listening to PORT ${process.env.PORT}`);

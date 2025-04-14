@@ -20,6 +20,7 @@ import DashNavigation from './components/dashnav';
 import { AdminContextProvider } from './context/adminContext';
 import AdminRoute from './router/adminRoute';
 import FAQ from './pages/faq';
+import ResetPassword from './pages/reset-password'; 
 
 
 function App() {
@@ -45,6 +46,7 @@ function App() {
               <Route path='/signin' element={<SignIn />} />
               <Route path='/signup' element={<SignUp />} />
               <Route path='/forgot-password' element={<ForgotPassword />} />
+              <Route path='/reset-password/:token' element={<ResetPassword />} /> 
 
               {/* User Routes */}
               <Route path='/user-feedback'
