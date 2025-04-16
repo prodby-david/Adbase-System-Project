@@ -12,6 +12,8 @@ const DashNavigation = () => {
     const { Logout } = useAuthContext();
 
     const navigate = useNavigate();
+    let autoLogout;
+
 
     useEffect(() => {
       const storedUser = JSON.parse(localStorage.getItem('client-user'));
@@ -34,14 +36,33 @@ const DashNavigation = () => {
           icon: 'info',
           confirmButtonText: 'Yes',
           showDenyButton: true,
+          allowOutsideClick: false,
+          allowEscapeKey: false,
           denyButtonText: 'No',
         }).then((result) => {
           if(result.isConfirmed){
-            Logout();
-            navigate('/');
+              Swal.fire({
+              title: 'Logging out...',
+              text: 'This will take a few seconds.',
+              icon: 'success',
+              confirmButtonText: 'OK',  
+              didOpen: () => {
+                autoLogout = setTimeout(() => {
+                  Swal.close();
+                  Logout();
+                  navigate('/');  
+                }, 2000);
+              }
+          }).then((result) => {
+            clearTimeout(autoLogout)
+            if(result.isConfirmed){
+              Logout();
+              navigate('/');
+            }
+          });
           }
         });
-      }
+  }
 
 
 

@@ -1,20 +1,19 @@
 import express from 'express';
 import jwt from 'jsonwebtoken';
-import bcrypt from 'bcryptjs';
 import User from '../models/user.js';
 
 
 const ResetPassword = express.Router();
 
-ResetPassword.post('/api/reset-password', async (req, res) => {
+ResetPassword.post('/api/reset-password/:token', async (req, res) => {
 
     const { password } = req.body;
-    const token = req.cookies.resetToken;
+    const { token } = req.params;
 
     if (!token) {
         return res.status(400).json({ message: 'No token provided.' });
     }
-
+    
     try {
         const decoded = jwt.verify(token, process.env.JWT_FORGOT_PASSWORD_KEY);
         const user = await User.findById(decoded.id);
@@ -23,13 +22,19 @@ ResetPassword.post('/api/reset-password', async (req, res) => {
             return res.status(400).json({ message: 'User not found.' });
         }
 
-        user.password = await bcrypt.hash(password, 10); 
+        user.password = password; 
         await user.save();
 
-        res.clearCookie('resetToken');
         res.status(200).json({ message: 'Password reset successfully.' });
         
     } catch (err) {
+
+        if (err.name === 'TokenExpiredError') {
+            return res.status(401).json({ message: 'Your reset link has expired. Please request a new one.' });
+        }
+        
         res.status(500).json({ message: err.message });
     }
 });
+
+export default ResetPassword;

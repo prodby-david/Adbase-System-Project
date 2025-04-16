@@ -52,17 +52,14 @@ const SignIn = () => {
 
         if(login?.data?.success){
 
-
           Swal.fire({
-            title: 'Login successfull',
+            title: 'Login success',
             text: 'Click the OK button to continue.',
             icon: 'success',
             confirmButtonText: 'OK',
           }).then(() => {
             navigate('/dashboard');
           });
-
-          
         }
       }
       catch(err) {

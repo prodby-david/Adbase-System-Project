@@ -11,11 +11,10 @@ const signInController = async (req,res) => {
         const user = await User.findOne({email});
 
         if(!user){
-            
             res.status(400).json({message: "Email doesn't exist."});
             return;
         }
-
+        
         const passwordMatch = await bcrypt.compare(password, user.password);
 
         if(!passwordMatch){

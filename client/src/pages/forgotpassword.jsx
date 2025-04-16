@@ -11,7 +11,6 @@ const ForgotPassword = () => {
 
   const handleChange = (e) => {
     setEmail(e.target.value);
-    setError('');
   }
 
   const handleSubmit = async (e) => {
@@ -76,7 +75,7 @@ const ForgotPassword = () => {
           <h2 className='font-semibold text-accent-color my-3 text-md md:text-lg'>Forgot Password</h2>
 
             <form className='w-full max-w-sm px-3 flex flex-col items-center justify-center gap-3' onSubmit={handleSubmit}>
-
+              
               <input type="text"
               placeholder='Enter your email'
               name='email'

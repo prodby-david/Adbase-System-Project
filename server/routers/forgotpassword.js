@@ -20,15 +20,10 @@ ForgotPassword.post('/api/forgot-password', async (req, res) => {
             return res.status(404).json({ message: "Email doesn't exist. Please check your email." });
         }
     
-        const token = jwt.sign({ id:user._id }, process.env.JWT_FORGOT_PASSWORD_KEY, { expiresIn: '15m' });
-    
-        res.cookie('resetToken', token, {
-            httpOnly: true,
-            secure: true,
-            sameSite: 'Strict',
-            maxAge: 15 * 60 * 1000, 
-          });
-    
+        const token = jwt.sign({ id:user._id }, process.env.JWT_FORGOT_PASSWORD_KEY, { expiresIn: '10m' });
+
+        res.status(200).json({ message: 'Reset link sent successfully.' });
+
         const transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
@@ -44,7 +39,7 @@ ForgotPassword.post('/api/forgot-password', async (req, res) => {
             html: `<p>Click <a href="http://localhost:5173/reset-password/${token}">here</a> to reset your password.</p>`,
           });
 
-          return res.status(200).json({ message: 'Reset link sent successfully.' });
+         
     
     }catch(err){
         res.status(500).json({ message: err.message });
