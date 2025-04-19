@@ -21,6 +21,7 @@ import { AdminContextProvider } from './context/adminContext';
 import AdminRoute from './router/adminRoute';
 import FAQ from './pages/faq';
 import ResetPassword from './pages/reset-password'; 
+import CreateProduct from './pages/admin/create-product';
 
 
 function App() {
@@ -33,50 +34,52 @@ function App() {
   return (
     
       <AuthProvider>
-          <Router>
-            <Routes>
+          <AdminContextProvider>
+            <Router>
+              <Routes>
 
-            <Route path='*' element={<Error />} />
+              <Route path='*' element={<Error />} />
 
-              {/* General Routes */}
-              <Route path='/' element={<LandingPage />} />
-              <Route path='/about' element={<About />} />
-              <Route path='/feedback' element={<Feedback />} />
-              <Route path='/faq' element={<FAQ />} />
-              <Route path='/signin' element={<SignIn />} />
-              <Route path='/signup' element={<SignUp />} />
-              <Route path='/forgot-password' element={<ForgotPassword />} />
-              <Route path='/reset-password/:token' element={<ResetPassword />} /> 
+                {/* General Routes */}
+                <Route path='/' element={<LandingPage />} />
+                <Route path='/about' element={<About />} />
+                <Route path='/feedback' element={<Feedback />} />
+                <Route path='/faq' element={<FAQ />} />
+                <Route path='/signin' element={<SignIn />} />
+                <Route path='/signup' element={<SignUp />} />
+                <Route path='/forgot-password' element={<ForgotPassword />} />
+                <Route path='/reset-password/:token' element={<ResetPassword />} /> 
 
-              {/* User Routes */}
-              <Route path='/user-feedback'
-              element={
-                <ProtectedRoute>
-                  <FeedbackForm />
-                </ProtectedRoute>} 
-                />
+                {/* User Routes */}
+                <Route path='/user-feedback'
+                element={
+                  <ProtectedRoute>
+                    <FeedbackForm />
+                  </ProtectedRoute>} 
+                  />
 
-              {/* Admin Routes */}
-              <Route path='/admin-registration' element={<AdminRegistration />} />     
-              <Route path='/admin-sign-in' element={<AdminLogin />} />   
-              <Route path='/admin-dashboard' 
-              element={
-                <AdminContextProvider>
+                <Route path='/dashboard'
+                element={
+                  <ProtectedRoute>
+                    <DashNavigation />
+                    <Dashboard /> 
+                  </ProtectedRoute>} 
+                  />
+
+              
+                {/* Admin Routes */}
+                <Route path='/admin-registration' element={<AdminRegistration />} />     
+                <Route path='/admin' element={<AdminLogin />} />   
+                <Route path='/admin-dashboard' 
+                element={ 
                   <AdminRoute>
-                    <AdminDashboard />
-                  </AdminRoute>
-                </AdminContextProvider>} 
+                    <AdminDashboard /> 
+                  </AdminRoute>} 
                 />
-              <Route path='/dashboard'
-               element={
-                <ProtectedRoute>
-                  <DashNavigation />
-                  <Dashboard />
-                </ProtectedRoute>} 
-                />
-
+                <Route path='/create-product' element={<CreateProduct />} />
             </Routes>
           </Router>
+          </AdminContextProvider>
       </AuthProvider>
    
   )

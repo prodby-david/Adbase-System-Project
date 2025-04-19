@@ -1,6 +1,6 @@
 import express from 'express';
-import Feedback from "../models/feedback.js";
-import authToken from '../middleware/authToken.js';
+import Feedback from "../../models/feedback.js";
+import authToken from '../../middleware/authToken.js';
 
 
 const CreateFeedback = express.Router();

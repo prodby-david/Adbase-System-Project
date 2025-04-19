@@ -39,7 +39,7 @@ const AdminRegistration = () => {
 
       if (response.data.message) {
         Swal.fire({
-          title: 'Registration Successful',
+          title: 'Registration Success',
           text: 'Press the OK button to continue',
           icon: 'success',
           confirmButtonText: 'OK'

@@ -14,11 +14,19 @@ const productSchema = new mongoose.Schema({
         type:String,
         required:true
     },
+    description:{
+        type:String,
+        required:true
+    },
     stocks:{
         type:Number,
         required:true
+    },
+    status:{
+        type:String,
+        required:true
     }
-},  {timestamp: true}
+},  {timestamps: true}
 );
 
 const Product = mongoose.model('Product', productSchema);

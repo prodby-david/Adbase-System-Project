@@ -12,7 +12,7 @@ const DashNavigation = () => {
     const { Logout } = useAuthContext();
 
     const navigate = useNavigate();
-    let autoLogout;
+
 
 
     useEffect(() => {
@@ -39,29 +39,34 @@ const DashNavigation = () => {
           allowOutsideClick: false,
           allowEscapeKey: false,
           denyButtonText: 'No',
+
         }).then((result) => {
+
           if(result.isConfirmed){
+            let countdown = 3;
+            let timerInterval;
               Swal.fire({
               title: 'Logging out...',
-              text: 'This will take a few seconds.',
+              text: `This will automatically logged out in ${countdown} seconds...`,
               icon: 'success',
               confirmButtonText: 'OK',  
               didOpen: () => {
-                autoLogout = setTimeout(() => {
-                  Swal.close();
-                  Logout();
-                  navigate('/');  
-                }, 2000);
+                timerInterval = setInterval(() => {
+                  countdown--;
+                  Swal.update({
+                     text: `This will automatically logged out in ${countdown} seconds...`
+                  });
+                  if (countdown === 0) {
+                    Swal.close();
+                    clearInterval(timerInterval);
+                    Logout();
+                    navigate('/');
+                  }
+                }, 1000);
               }
-          }).then((result) => {
-            clearTimeout(autoLogout)
-            if(result.isConfirmed){
-              Logout();
-              navigate('/');
-            }
           });
-          }
-        });
+        }
+      });
   }
 
 

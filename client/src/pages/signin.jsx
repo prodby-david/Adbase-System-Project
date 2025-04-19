@@ -109,7 +109,7 @@ const SignIn = () => {
 
             <button className='mt-3 flex items-center justify-center gap-x-2 p-3 w-full rounded-md text-text-color bg-accent-color hover:text-main-color cursor-pointer hover:opacity-90'>
               <img src="google-icon.png" alt="google-icon" className='w-4 sm:w-5 md:w-6' />
-              <p className='text-sm md:text-md lg:text-base'>Sign in with google</p>
+              <p className='text-sm md:text-md lg:text-base'>Continue with google</p>
             </button>
 
             <div className='mt-5 flex items-center justify-center w-full'>

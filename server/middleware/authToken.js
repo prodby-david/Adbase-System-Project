@@ -11,13 +11,7 @@ const authToken = (req,res,next) => {
 
     try {
         const verifyToken = jwt.verify(user_token, process.env.JWT_SECRET_KEY);
-        console.log("Decoded Token:", verifyToken);
-
         req.user = verifyToken;
-        console.log("Request User:", req.user)
-
-        const userId = req.user.userId;
-        console.log("Extracted User ID:", userId);
 
         next();
     }

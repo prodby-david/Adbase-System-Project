@@ -6,12 +6,13 @@ export const AdminContextProvider =  ({ children }) => {
 
     const [admin, setAdmin] = useState(() => {
         const savedAdmin = localStorage.getItem('admin');
-        return savedAdmin ? JSON.parse(savedAdmin) : null;
+        return savedAdmin && savedAdmin !== "undefined" ? JSON.parse(savedAdmin) : null;
+
     });
 
-    const Login = (userData) => {
-        localStorage.setItem('admin', JSON.stringify(userData.admin));
-        setAdmin(userData.admin);
+    const Login = (adminData) => {
+        localStorage.setItem('admin', JSON.stringify(adminData)); 
+        setAdmin(adminData);
     };
 
     const Logout = () => {

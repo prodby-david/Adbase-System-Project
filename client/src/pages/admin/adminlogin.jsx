@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import Swal from 'sweetalert2';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useAdminContext } from '../../context/adminContext';
 
 
 const AdminLogin = () => {
@@ -10,6 +11,9 @@ const AdminLogin = () => {
     adminusername: '',
     adminpassword: ''
   });
+
+  const { Login } = useAdminContext();
+
 
   const [error, setError] = useState('');
   const [userError, setUserError] = useState('');
@@ -53,18 +57,13 @@ const AdminLogin = () => {
 
     try {
 
-      const adminLogin = await axios.post('http://localhost:3800/api/admin', adminData, {withCredentials: true});
+      const adminLogin = await axios.post('http://localhost:3800/api/admin/sign-in', adminData, {withCredentials: true});
 
       if(adminLogin?.data?.success){
         setAdminData({
           adminusername: '',
           adminpassword: ''
         });
-
-        localStorage.setItem('admin', JSON.stringify({
-          adminusername: adminData.adminusername,
-          adminpassword: adminData.adminpassword
-        }));
         
         Swal.fire({
           title: 'Login successful',
@@ -72,6 +71,7 @@ const AdminLogin = () => {
           icon: 'success',
           confirmButtonText: 'OK'
         }).then(() => {
+        Login(adminLogin.data.admin);
          navigate('/admin-dashboard');
         });
       }
@@ -111,7 +111,6 @@ const AdminLogin = () => {
           className={`p-3 w-full border-0 border-b border-main-color outline-0 text-sm ${userError && 'border-red-500'} ${error && 'border-red-500'}`}
           />
 
-          
           <input type="password"
           name="adminpassword"
           value={adminData.adminpassword}

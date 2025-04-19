@@ -1,10 +1,10 @@
 import React, {useEffect} from 'react'
 import axios from 'axios';
+import AdminNav from '../../components/admin-nav';
 
 const CreateProduct = () => {
 
     useEffect(() => {
-        
         const fetchProducts = async () => {
             try {
                 const products = await axios.get('http://localhost:3800/api/products');
@@ -16,18 +16,10 @@ const CreateProduct = () => {
         fetchProducts();
     }, []);
 
-    const addProduct = async () => {
-        await axios.post("/api/admin/products", newProduct);
-        setNewProduct({ name: "", price: "", image: "", stock: "" });
-        window.location.reload();
-    };
-
-
-
 
   return (
     <div>
-      
+      <AdminNav />
     </div>
   )
 }
