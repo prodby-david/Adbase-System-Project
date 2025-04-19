@@ -35,7 +35,7 @@ const AdminRegistration = () => {
     }
 
     try {
-      const response = await axios.post('http://localhost:3800/api/admin-registration', adminData);
+      const response = await axios.post('http://localhost:4200/api/admin-registration', adminData);
 
       if (response.data.message) {
         Swal.fire({

@@ -9,7 +9,7 @@ const Feedback = () => {
       useEffect(() => {
         const fetchFeedback = async () => {
             try {
-                const response = await axios.get('http://localhost:3800/api/user-feedback');
+                const response = await axios.get('http://localhost:4200/api/user-feedback');
                 setFeedback(response.data);
             } catch (error) {
                 console.error('Error fetching feedback:', error.message);

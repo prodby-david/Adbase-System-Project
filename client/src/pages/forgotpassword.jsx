@@ -30,7 +30,7 @@ const ForgotPassword = () => {
     setLoading(true);
 
     try{
-        const response = await axios.post('http://localhost:3800/api/forgot-password', {
+        const response = await axios.post('http://localhost:4200/api/forgot-password', {
           email,
         }, { withCredentials: true });
 

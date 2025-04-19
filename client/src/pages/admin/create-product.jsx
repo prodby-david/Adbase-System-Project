@@ -7,7 +7,7 @@ const CreateProduct = () => {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const products = await axios.get('http://localhost:3800/api/products');
+                const products = await axios.get('http://localhost:4200/api/products');
                 console.log(products);
             } catch (error) {
                 console.log(error);

@@ -74,7 +74,7 @@ const SignUp = () => {
 
       try{
 
-        const register = await axios.post('http://localhost:3800/api/signup', userData);
+        const register = await axios.post('http://localhost:4200/api/signup', userData);
         console.log('User registered', register.data);
 
         const data = register.data;
