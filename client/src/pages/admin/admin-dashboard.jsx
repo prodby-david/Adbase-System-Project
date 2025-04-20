@@ -13,8 +13,30 @@ const AdminDashboard = () => {
       <AdminNav />
       </div>
 
+      <div className='grid grid-cols-3 gap-5 mt-10 px-5 w-full'>
 
-      <div className='flex items-center justify-center gap-x-5 mt-10 px-5 w-full'>
+        <div className='col-span-2 bg-main-color h-75 w-full p-5 rounded-xl'>
+
+        </div>
+
+        <div className='bg-main-color h-45 w-full max-w-sm p-5 rounded-xl relative'>
+
+          <h2 className='text-2xl text-text-color font-semibold'>Total Product Listed</h2>
+
+          <div className='flex items-center mt-7 gap-x-2'>
+
+            <FontAwesomeIcon icon={faClipboardList} className='text-[28px] text-accent-color'/>
+            <p className='text-accent-color text-lg font-semibold'>16</p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      
+
+      <div className='grid grid-cols-3 gap-5 mt-10 px-5 w-full'>
 
         <div className='bg-main-color h-45 w-full max-w-sm p-5 rounded-xl'>
 
@@ -52,27 +74,6 @@ const AdminDashboard = () => {
             <p className='text-accent-color text-lg font-semibold'>128,092</p>
 
           </div>
-
-        </div>
-
-        <div className='bg-main-color h-45 w-full max-w-sm p-5 rounded-xl relative'>
-
-          <h2 className='text-2xl text-text-color font-semibold'>Total Product Listed</h2>
-
-          <div className='flex items-center mt-7 gap-x-2'>
-
-            <FontAwesomeIcon icon={faClipboardList} className='text-[28px] text-accent-color'/>
-            <p className='text-accent-color text-lg font-semibold'>16</p>
-
-          </div>
-
-          <div className='flex items-center'>  
-            <a href="show-products" 
-            className='flex items-center gap-x-1 mt-8 text-md text-accent-color hover:underline'
-            >Show all products <FontAwesomeIcon icon={faArrowRight} className='text-lg'/>
-            </a>
-          </div>
-        
 
         </div>
 
