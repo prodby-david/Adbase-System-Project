@@ -12,9 +12,6 @@ const LandingPage = () => {
 
         <div className='flex items-center justify-center lg:justify-around min-h-screen relative '>
 
-        <video src="eatingcookies(1).mp4" type="video/mp4" autoPlay loop muted className='absolute hidden lg:block w-screen h-screen object-fill'>
-        </video>
-
             <div className='flex items-center text-center flex-col mt-20 relative'>
 
               <div className='block lg:hidden'>
