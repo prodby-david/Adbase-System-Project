@@ -18,9 +18,14 @@ const CreateProduct = () => {
 
 
   return (
-    <div>
-      <AdminNav />
-    </div>
+      <>
+      
+      <div className='absolute top-0'>
+       <AdminNav />
+      </div>
+
+
+      </>
   )
 }
 

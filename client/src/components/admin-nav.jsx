@@ -1,7 +1,7 @@
 import React from 'react'
 import Swal from 'sweetalert2'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowRightLong, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRightLong, faTimes, faClipboardList } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAdminContext } from '../context/adminContext';
@@ -76,11 +76,11 @@ const AdminNav = () => {
       <ul className='flex flex-col items-center w-full'>
 
         <li className='w-full text-center text-md border-0 border-b border-t border-text-color p-5'>
-          <a href="" onClick={navController}>Dashboard</a>
+          <a href="admin-dashboard" onClick={navController}>Dashboard</a>
         </li>
 
         <li className='w-full text-center text-md border-0 border-b-1 p-5 border-text-color'>
-          <a href="" onClick={navController}>Show All Product</a>
+          <a href="show-products" onClick={navController}><FontAwesomeIcon icon={faClipboardList}/>Show All Product</a>
         </li>
 
         <li className='w-full text-center text-md border-0 border-b-1 p-5 border-text-color'>
