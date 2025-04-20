@@ -68,11 +68,6 @@ const AdminNav = () => {
     <>
     <nav className={`fixed flex flex-col items-center justify-center gap-y-20 h-full w-[320px] bg-accent-color ${isOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-500 z-50 dark:shadow-lg}`}>
 
-      <div className='flex flex-col items-center'>
-        <h2 className='text-xl font-semibold text-text-color'>Welcome Back, Admin</h2>
-        <p className='text-sm text-text-color'>Let's make today sweet.</p>
-      </div>
-
       <ul className='flex flex-col items-center w-full'>
 
         <li className='w-full text-center text-md border-0 border-b border-t border-text-color p-5'>
