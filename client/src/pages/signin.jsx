@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {faCookieBite, faChevronLeft} from "@fortawesome/free-solid-svg-icons";
+import {faCookieBite, faChevronLeft, faEyeSlash, faEye,} from "@fortawesome/free-solid-svg-icons";
 import axios from 'axios';
 import Swal from 'sweetalert2'
 import { useNavigate } from 'react-router-dom';
@@ -18,6 +18,11 @@ const SignIn = () => {
   const [error, setError] = useState('');
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+
+  const togglePassword = () => {
+    setShowPassword(!showPassword);
+  }
 
   const navigate = useNavigate();
 
@@ -136,8 +141,8 @@ const SignIn = () => {
                   {emailError && <p className='text-red-500 text-sm'>{emailError}</p>}
                 </div>
 
-                <div className='mt-4'>
-                  <input type="password"
+                <div className='mt-4 relative'>
+                  <input type={showPassword ? 'text' : 'password'}
                   name='password'
                   id='password'
                   value={userData.password}
@@ -145,7 +150,15 @@ const SignIn = () => {
                   placeholder='Password'
                   className={`placeholder-text-color text-sm md:text-md lg:text-base text-text-color p-2 outline-none border border-main-color w-full max-w-xl rounded-md ${passwordError ? 'border-red-500' : ''}`}
                   />
+
+                  <FontAwesomeIcon 
+                    icon={showPassword ? faEye : faEyeSlash}
+                    className='absolute right-5 top-[13px] cursor-pointer text-text-color text-sm'
+                    onClick={togglePassword}
+                  />
+
                   {passwordError && <p className='text-red-500 text-sm'>{passwordError}</p>}
+                  
                 </div>
                 
                 <div className='mt-5'>

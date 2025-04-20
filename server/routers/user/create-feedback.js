@@ -7,8 +7,6 @@ const CreateFeedback = express.Router();
 
 CreateFeedback.post('/api/user-feedback', authToken, async (req, res) => {
 
-    console.log("User data from authToken middleware:", req.user);
-
     try {
         const userId = req.user.userId;
         const { fullname, email, comment } = req.body;

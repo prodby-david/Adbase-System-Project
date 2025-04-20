@@ -63,7 +63,13 @@ const DashNavigation = () => {
                     navigate('/');
                   }
                 }, 1000);
+              },
+              willClose: () => {
+                clearInterval(timerInterval); 
               }
+          }).then(() => {
+            Logout();
+            navigate('/');
           });
         }
       });
