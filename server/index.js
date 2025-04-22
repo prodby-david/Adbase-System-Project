@@ -12,6 +12,7 @@ import ForgotPassword from './routers/forgotpassword.js';
 import ResetPassword from './routers/resetpassword.js';
 import ProductRouter from './routers/admin/product.js';
 import logger from './middleware/logger.js';
+import PurchaseRouter from './routers/user/purchase.js';
 
 
 dotenv.config();
@@ -29,7 +30,7 @@ methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH']}));
 
 app.use(signUpRouter, signInRouter, AdminRouter,
 AdminLoginRouter, CreateFeedback, ForgotPassword, 
-ResetPassword, ProductRouter);
+ResetPassword, ProductRouter, PurchaseRouter);
 
 app.listen(process.env.PORT, () => {
     console.log(`Server is running on PORT: ${process.env.PORT}`);

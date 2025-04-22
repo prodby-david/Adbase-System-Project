@@ -3,13 +3,12 @@ import Product from '../../models/products.js';
 
 const CreateProduct = async (req, res) => {
 
-    const { name, price, image, description, stocks, status  } = req.body;
+    const { name, price, description, stocks, status  } = req.body;
 
     try {
         const newProduct = new Product({
            name,
            price,
-           image,
            description,
            stocks,
            status   
@@ -18,7 +17,7 @@ const CreateProduct = async (req, res) => {
         await newProduct.save();
         res.status(201).json({ message: 'Product created successfully', product: newProduct });
 
-    } catch (error) {
+    } catch(error) {
         res.status(500).json({ message: 'Error creating product', error });
     }
 };

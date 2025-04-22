@@ -7,7 +7,7 @@ import SignIn from './pages/signin';
 import SignUp from './pages/signup';
 import Error from './pages/error';
 import About from './pages/about';
-import Dashboard from './pages/dashboard';
+import Dashboard from './pages/user/dashboard';
 import { AuthProvider } from './context/authContext';
 import ProtectedRoute from './router/protectedRoute';
 import AdminRegistration from './pages/admin/adminregister';
@@ -22,6 +22,7 @@ import AdminRoute from './router/adminRoute';
 import FAQ from './pages/faq';
 import ResetPassword from './pages/reset-password'; 
 import CreateProduct from './pages/admin/create-product';
+import ShowProducts from './pages/admin/showproduct';
 
 
 function App() {
@@ -55,7 +56,8 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <FeedbackForm />
-                  </ProtectedRoute>} 
+                  </ProtectedRoute>
+                  } 
                   />
 
                 <Route path='/dashboard'
@@ -63,7 +65,8 @@ function App() {
                   <ProtectedRoute>
                     <DashNavigation />
                     <Dashboard /> 
-                  </ProtectedRoute>} 
+                  </ProtectedRoute>
+                  } 
                   />
 
               
@@ -77,6 +80,7 @@ function App() {
                   </AdminRoute>} 
                 />
                 <Route path='/create-product' element={<CreateProduct />} />
+                <Route path='/show-products' element={<ShowProducts />} />
             </Routes>
           </Router>
           </AdminContextProvider>

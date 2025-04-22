@@ -1,7 +1,7 @@
 import React from 'react'
 import Swal from 'sweetalert2'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowRightLong, faTimes, faClipboardList } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRightLong, faTimes, faChartLine, faBoxOpen, faPenToSquare, faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAdminContext } from '../context/adminContext';
@@ -70,20 +70,20 @@ const AdminNav = () => {
 
       <ul className='flex flex-col items-center w-full'>
 
-        <li className='w-full text-center text-md border-0 border-b border-t border-text-color p-5'>
-          <a href="admin-dashboard" onClick={navController}>Dashboard</a>
+        <li className='w-full text-center text-md border-0 border-b border-t border-main-color p-5'>
+          <a href="admin-dashboard" className='text-text-color' onClick={navController}><FontAwesomeIcon icon={faChartLine} className='text-main-color mr-2'/>Dashboard</a>
         </li>
 
-        <li className='w-full text-center text-md border-0 border-b-1 p-5 border-text-color'>
-          <a href="show-products" onClick={navController}><FontAwesomeIcon icon={faClipboardList}/>Show All Product</a>
+        <li className='w-full text-center text-md border-0 border-b-1 p-5 border-main-color'>
+          <a href="show-products" onClick={navController} className='text-text-color'><FontAwesomeIcon icon={faBoxOpen} className='text-main-color mr-2'/>Show All Product</a>
         </li>
 
-        <li className='w-full text-center text-md border-0 border-b-1 p-5 border-text-color'>
-          <a href="/create-product">Create Product</a>
+        <li className='w-full text-center text-md border-0 border-b-1 p-5 border-main-color'>
+          <a href="/create-product" className='text-text-color'><FontAwesomeIcon icon={faPenToSquare} className='text-main-color mr-2'/>Create Product</a>
         </li>
 
-        <li className='w-full text-center text-md border-0 border-b-1 p-5 border-text-color'>
-          <a href="" onClick={handleLogout}>Sign out</a>
+        <li className='w-full text-center text-md border-0 border-b-1 p-5 border-main-color'>
+          <a href="" onClick={handleLogout} className='text-text-color'><FontAwesomeIcon icon={faArrowRightFromBracket} className='text-main-color mr-2'/>Sign out</a>
         </li>
 
       </ul>

@@ -15,17 +15,17 @@ const AdminDashboard = () => {
 
       <div className='px-3'>
 
-      <div className='grid grid-cols-3 grid-rows-2 justify-items-center gap-5 my-10 p-5 bg-accent-color shadow-sm shadow-accent-color rounded-xl min-h-screen' data-aos="fade-down" data-aos-duration="1000">
+      <div className='grid grid-cols-1 lg:grid-cols-3 lg:grid-rows-2 justify-items-center gap-5 p-5 bg-accent-color shadow-sm shadow-accent-color rounded-xl my-2' data-aos="fade-down" data-aos-duration="1000">
 
       <div className='col-span-2 flex bg-main-color w-full p-5 rounded-xl text-text-color relative' data-aos="fade-down" data-aos-duration="2000">
 
         <div>
-          <h2 className='text-[32px]'>Welcome Admin,</h2>
-          <p className='text-[40px] text-accent-color font-bold'>John David Gaspar</p>
+          <h2 className='text-sm lg:text-[32px]'>Welcome Admin,</h2>
+          <p className='text-lg lg:text-[40px] text-accent-color font-bold'>John David Gaspar</p>
           <p className='text-[20px]'>Let's make today sweet!</p>
         </div>
         
-        <div className='absolute right-15' data-aos="fade-down" data-aos-duration="3000">
+        <div className='absolute right-15 hidden lg:block' data-aos="fade-down" data-aos-duration="3000">
           <img src="happy-cookie.png" alt="energetic-cookie" className='w-[250px]'/>
         </div>
 
