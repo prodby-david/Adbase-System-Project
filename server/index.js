@@ -13,10 +13,25 @@ import ResetPassword from './routers/resetpassword.js';
 import ProductRouter from './routers/admin/product.js';
 import logger from './middleware/logger.js';
 import PurchaseRouter from './routers/user/purchase.js';
+import { Server } from 'socket.io';
+import http from 'http';
 
 
 dotenv.config();
 const app = express();
+
+const server = http.createServer(app);
+
+const io = new Server(server, {
+  cors: {
+    origin: 'http://localhost:5173', 
+    methods: ['GET', 'POST']
+  }
+});
+
+io.on('connection', (socket) => {
+  console.log('A user connected:', socket.id);
+});
 
 app.use(logger);
 
@@ -28,14 +43,18 @@ app.use(cors({origin: 'http://localhost:5173',
 credentials: true,
 methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH']}));
 
+app.use('/uploads', express.static('uploads'));
+
 app.use(signUpRouter, signInRouter, AdminRouter,
 AdminLoginRouter, CreateFeedback, ForgotPassword, 
-ResetPassword, ProductRouter, PurchaseRouter);
+ResetPassword, ProductRouter, PurchaseRouter );
 
-app.listen(process.env.PORT, () => {
+server.listen(process.env.PORT, () => {
     console.log(`Server is running on PORT: ${process.env.PORT}`);
     connectDB();
 });
+
+export { io };
 
 
 

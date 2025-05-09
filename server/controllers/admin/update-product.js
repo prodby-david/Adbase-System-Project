@@ -1,12 +1,12 @@
 import Product from "../../models/products.js";
+import { io } from '../../index.js';
 
 const UpdateProduct = async (req, res) => {
 
     const { name, description, price, stocks } = req.body;
 
     try {
-
-      const updatedProduct = await Product.findByIdAndUpdate(
+        const updatedProduct = await Product.findByIdAndUpdate(
         req.params.id,
         { name, description, price, stocks },
         { new: true }
@@ -15,6 +15,10 @@ const UpdateProduct = async (req, res) => {
       if (!updatedProduct) {
         return res.status(404).json({ message: 'Product not found' });
       }
+
+      io.emit('productUpdated', { product: updatedProduct });
+      
+      console.log('Emitting productUpdated with:', updatedProduct); 
 
       res.json({ updatedProduct });
 

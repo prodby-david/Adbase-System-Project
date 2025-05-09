@@ -23,6 +23,8 @@ import FAQ from './pages/faq';
 import ResetPassword from './pages/reset-password'; 
 import CreateProduct from './pages/admin/create-product';
 import ShowProducts from './pages/admin/showproduct';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 function App() {
@@ -30,6 +32,7 @@ function App() {
   useEffect(() => {
     AOS.init(); 
   }, []);
+
 
 
   return (
@@ -82,9 +85,22 @@ function App() {
                 <Route path='/create-product' element={<CreateProduct />} />
                 <Route path='/show-products' element={<ShowProducts />} />
             </Routes>
+
+            <ToastContainer 
+            position="bottom-right"
+            autoClose={3000}
+            hideProgressBar={true}
+            newestOnTop
+            closeOnClick
+            pauseOnHover
+            theme='colored'
+            />
+
           </Router>
           </AdminContextProvider>
       </AuthProvider>
+
+      
    
   )
 }

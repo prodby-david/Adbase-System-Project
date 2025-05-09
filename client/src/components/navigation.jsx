@@ -16,7 +16,7 @@ const Navigation = () => {
 
   return (
 
-    <div className='flex items-center justify-around py-3 shadow-sm w-full fixed top-0 left-0 z-20 bg-main-color' data-aos="fade-down" data-aos-duration="2000">
+    <div className='flex items-center justify-around py-1 shadow-sm w-full fixed top-0 left-0 z-20 bg-main-color' data-aos="fade-down" data-aos-duration="2000">
 
         <div>
             <a href="/">

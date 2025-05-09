@@ -4,10 +4,39 @@ import Swal from 'sweetalert2';
 import AdminNav from '../../components/admin-nav';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
+import { io } from 'socket.io-client';
+
+const socket = io('http://localhost:4200');
 
 const ShowProducts = () => {
 
   const [products, setProducts] = useState([]);
+  
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const response = await axios('/api/products');
+      setProducts(response.data);
+    };
+
+    fetchProducts();
+
+
+    socket.on('productUpdated', (data) => {
+      const updatedProduct = data.product;
+
+
+      setProducts((prevProducts) => 
+        prevProducts.map((product) =>
+          product._id === updatedProduct._id ? updatedProduct : product
+        )
+      );
+    });
+
+    return () => {
+      socket.off('productUpdated');
+    };
+  }, [socket]);
 
     useEffect(() => {
 
@@ -75,7 +104,14 @@ const ShowProducts = () => {
       try {
 
         const response = await axios.put(`http://localhost:4200/product/${product._id}`, updatedProduct);
+
         Swal.fire('Updated!', 'The product has been updated.', 'success');
+
+        socket.emit('productUpdated', { 
+          productId: product._id,
+          product: response.data.updatedProduct
+        });
+
         setProducts(products.map(p => p._id === product._id ? response.data.updatedProduct : p));
       } 
       catch (error) {
@@ -96,7 +132,7 @@ const ShowProducts = () => {
       <div className="p-10">
       <h2 className="text-2xl font-bold text-accent-color mb-5">All Products</h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {products.map(product => (
+        {Array.isArray(products) && products.length > 0 ? (products.map(product => (
           <div key={product._id} className="bg-bg-color shadow-md rounded-lg p-5">
             <h3 className="text-xl font-semibold text-accent-color">{product.name}</h3>
             <p className="text-text-color">{product.description}</p>
@@ -114,7 +150,10 @@ const ShowProducts = () => {
             onClick={() => deleteProduct(product._id)} 
             />
           </div>
-        ))}
+        ))
+      ) : (
+        <div className="col-span-3 text-center text-gray-500">No products available.</div>
+      )}
       </div>
     </div>
       

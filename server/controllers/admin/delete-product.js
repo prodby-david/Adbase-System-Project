@@ -1,4 +1,5 @@
 import Product from "../../models/products.js";
+import { io } from '../../index.js'
 
 
 const DeleteProduct = async (req, res) => {
@@ -9,6 +10,8 @@ const DeleteProduct = async (req, res) => {
     if (!deletedProduct) {
       return res.status(404).json({ success: false, message: 'Product not found' });
     }
+
+    io.emit('productDeleted', { productId });
 
     res.status(200).json({ success: true, message: 'Product deleted successfully' });
   } catch (error) {

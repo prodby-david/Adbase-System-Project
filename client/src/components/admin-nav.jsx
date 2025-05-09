@@ -66,7 +66,7 @@ const AdminNav = () => {
   
   return (
     <>
-    <nav className={`fixed flex flex-col items-center justify-center gap-y-20 h-full w-[320px] bg-accent-color ${isOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-500 z-50 dark:shadow-lg}`}>
+    <nav className={`fixed flex flex-col items-center justify-center gap-y-20 h-full w-[320px] bg-accent-color shadow-md shadow-main-color ${isOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-500 z-50 dark:shadow-lg}`}>
 
       <ul className='flex flex-col items-center w-full'>
 
