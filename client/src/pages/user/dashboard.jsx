@@ -4,12 +4,15 @@ import Swal from 'sweetalert2';
 import DashNavigation from '../../components/dashnav';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCartShopping, faHeart, faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { io } from  'socket.io-client';
 
 
 
 const socket = io('http://localhost:4200');
+
+
 
 const handleAddToFavorites = () => {
   toast.success("Added to favorites", {
@@ -29,11 +32,94 @@ const handleAddToCart = () => {
   });
 };
 
-
-
 const Dashboard = () => {
 
   const [showProducts, setShowProducts] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [discountCode, setDiscountCode] = useState('');
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [deliveryOption, setDeliveryOption] = useState('delivery');
+
+  const navigate = useNavigate();
+
+   const handleBuyNow = (product) => {
+    setSelectedProduct(product);
+
+      Swal.fire({
+      title: 'Enter Quantity',
+      input: 'number',
+      inputValue: 1,
+      inputAttributes: {
+        min: 1,
+        max: product.stocks,
+        step: 1
+      },
+      showCancelButton: true,
+      inputPlaceholder: 'Enter quantity',
+      confirmButtonText: 'Next',
+      preConfirm: (quantity) => {
+        quantity = Number(quantity);
+        if (quantity <= 0) {
+          Swal.showValidationMessage('Quantity must be greater than 0');
+        } else if (quantity > product.stocks) {
+          Swal.showValidationMessage('Not enough stocks');
+        }else {
+          return quantity;
+        }
+      }
+    }).then((result) => {
+      if (result.isConfirmed) {
+         const enteredQuantity = result.value;
+        Swal.fire({
+          title: 'Enter Discount Code (Optional)',
+          input: 'text',
+          inputPlaceholder: 'Discount code',
+          showCancelButton: true,
+          confirmButtonText: 'Next'
+        }).then((discountResult) => {
+          const enteredDiscountCode = discountResult.value || '';
+          const calculatedTotal = calculateTotalPrice(product.price, enteredQuantity, enteredDiscountCode);
+
+      
+          Swal.fire({
+            title: 'Confirm Purchase',  
+            html: `
+              <strong>Product:</strong> ${product.name} <br>
+              <strong>Quantity:</strong> ${enteredQuantity} <br>
+              <strong>Price per item:</strong> ₱${product.price} <br>
+              <strong>Shipping Fee:</strong> ₱${deliveryOption === 'delivery' ? '60' : '0'} <br>
+              <strong>Discount:</strong> ${enteredDiscountCode === 'OvenlyHazelCookies' ? '20%' : 'None'} <br>
+              <strong>Total Price:</strong> ₱${calculatedTotal.toFixed(2)} <br>
+            `,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Confirm Purchase',
+            cancelButtonText: 'Cancel'
+          }).then((finalConfirm) => {
+            if (finalConfirm.isConfirmed) {
+              handlePurchase(product._id, enteredQuantity);
+            }
+          });
+        });
+      }
+    });
+};
+
+  const calculateTotalPrice = (productPrice, quantity, discountCode) => {
+
+    let price = productPrice * quantity;
+    const shippingFee = deliveryOption === 'delivery' ? 60 : 0;
+    price += shippingFee;
+
+    console.log("Initial Price (without discount):", price);
+    
+     if (discountCode === 'OvenlyHazelCookies') {
+      price = price * 0.8;
+    }else if (discountCode === 'SweetCookies') {
+      price = price * 0.9;
+    }
+    return price;
+  };
 
   useEffect(() => {
 
@@ -43,7 +129,6 @@ const Dashboard = () => {
     socket.on('productUpdated', handleProductUpdated);
 
     return () => {
-      socket.off('productDeleted');
       socket.off('productUpdated', handleProductUpdated);
     };
 
@@ -78,6 +163,10 @@ const Dashboard = () => {
             text: `${newProduct.name} is now available.`,
             icon: 'info',
             confirmButtonText: 'Check it out'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              navigate('/dashboard');
+            }
           });
         };
       
@@ -89,12 +178,17 @@ const Dashboard = () => {
       }, []);
 
    
-    const handleBuyNow = async (productId) => {
+    const handlePurchase = async (productId, quantity) => {
+
+      if (!quantity || quantity <= 0) {
+      Swal.fire('Oops!', 'Please select a valid quantity.', 'error');
+      return;
+    }
 
       try {
         const response = await axios.post(`http://localhost:4200/purchase`, {
           productId,
-          quantity: parsedQuantity
+          quantity
         });
   
         if (response.data.success) {
@@ -126,7 +220,7 @@ const Dashboard = () => {
                   <div key={product._id} className="bg-bg-color shadow-md rounded-lg p-3">
                   <img src={`http://localhost:4200/uploads/${product.image}`}
                   alt={product.name}
-                  className='rounded-sm mb-2 h-48 w-full object-cover'/>
+                  className='rounded-sm mb-2 h-48 w-full object-contain'/>
                     <h3 className="text-xl font-semibold text-accent-color">{product.name}</h3>
                     <p className="text-text-color">{product.description}</p>
                     <p className="mt-2 font-bold text-lg text-accent-color">₱{product.price}</p>
@@ -135,13 +229,16 @@ const Dashboard = () => {
                       Status: {product.status}
                     </p>
 
-                    <div className="flex items-center justify-between items-center mt-2 p-2">
+                    <div className="flex items-center justify-between mt-2 p-2">
 
                       <button
-                        className="bg-accent-color text-text-color py-2 px-4 rounded hover:bg-opacity-80 transition mt-3"
+                        className={`bg-accent-color text-text-color py-2 px-4 rounded mt-3 ${product.status === 'Unavailable' ? 'opacity-50' : ''}`}
+                        disabled={product.status === 'Unavailable'}
+                        onClick={() => handleBuyNow(product)}
                         >
                         Buy Now
                       </button>
+
                       
                       <div className='flex gap-4'>
 
@@ -176,7 +273,7 @@ const Dashboard = () => {
         {showProducts.length === 0 && (
           <div className="flex items-center justify-center flex-col py-20">
             <FontAwesomeIcon icon={ faSpinner } className='animate-spin text-accent-color text-6xl'/>
-            <p className='text-text-color text-lg'>Hold on, your cookies are almost ready!</p>
+            <p className='text-text-color text-lg mt-3'>Hold on, your cookies are almost ready!</p>
           </div>
           
         )}

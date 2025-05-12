@@ -98,7 +98,7 @@ const CreateProduct = () => {
 
             <label className='mt-3 text-md font-medium text-text-color'>Product Status</label>
             <div className='flex gap-x-5 mt-1'>
-              {["Available", "Out of Stock", "Restocking"].map((status) => (
+              {["Available", "Out of Stock", "Unavailable"].map((status) => (
                 <label key={status}>
                   <input type="radio" name="status" value={status} checked={productData.status === status}
                     onChange={handleChange} className='mr-1' />

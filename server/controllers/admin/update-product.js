@@ -3,12 +3,12 @@ import { io } from '../../index.js';
 
 const UpdateProduct = async (req, res) => {
 
-    const { name, description, price, stocks } = req.body;
+    const { name, description, price, stocks, status } = req.body;
 
     try {
         const updatedProduct = await Product.findByIdAndUpdate(
         req.params.id,
-        { name, description, price, stocks },
+        { name, description, price, stocks, status },
         { new: true }
       );
 

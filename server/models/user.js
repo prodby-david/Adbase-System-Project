@@ -18,6 +18,11 @@ const userSchema = mongoose.Schema({
     password:{
         type: String,
         required: true
+    },
+     adminId: { 
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Admin',
+        required: true
     }
 });
 
