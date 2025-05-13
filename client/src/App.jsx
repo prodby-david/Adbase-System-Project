@@ -24,6 +24,9 @@ import ResetPassword from './pages/reset-password';
 import CreateProduct from './pages/admin/create-product';
 import ShowProducts from './pages/admin/showproduct';
 import { ToastContainer } from 'react-toastify';
+import Orders from './pages/user/orders';
+import AdminOrders from './pages/admin/admin-orders';
+
 import 'react-toastify/dist/ReactToastify.css';
 
 
@@ -72,6 +75,15 @@ function App() {
                   } 
                   />
 
+                  <Route path='/orders'
+                    element={
+                      <ProtectedRoute>
+                        <DashNavigation />
+                        <Orders /> 
+                      </ProtectedRoute>
+                      } 
+                  />
+
               
                 {/* Admin Routes */}
                 <Route path='/admin-registration' element={<AdminRegistration />} />     
@@ -82,8 +94,16 @@ function App() {
                     <AdminDashboard /> 
                   </AdminRoute>} 
                 />
+                <Route path='/admin-orders'
+                element={
+                  <AdminRoute>
+                    <AdminOrders />
+                  </AdminRoute>
+                }
+                />
                 <Route path='/create-product' element={<CreateProduct />} />
                 <Route path='/show-products' element={<ShowProducts />} />
+                
             </Routes>
 
             <ToastContainer 

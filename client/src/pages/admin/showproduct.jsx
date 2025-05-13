@@ -11,33 +11,41 @@ const socket = io('http://localhost:4200');
 const ShowProducts = () => {
 
   const [products, setProducts] = useState([]);
+
+  const updateProductStatus = (product) => {
+    if (parseInt(product.stocks) <= 0) {
+      return { ...product, status: 'Out of Stock' };
+    }
+    return product;
+  };
+
   
-
-
-
     useEffect(() => {
 
-      const fetchProducts = async () => {
-        try {
-          const response = await axios.get('http://localhost:4200/product');
-          setProducts(response.data.products);
-        } catch (error) {
-          console.error('Error fetching products:', error);
-        }
-      };
+        const fetchProducts = async () => {
+          try {
+            const response = await axios.get('http://localhost:4200/product');
+              const updatedProducts = response.data.products.map(product => {
+              return updateProductStatus(product);
+        });
+         setProducts(updatedProducts);
+          } catch (error) {
+            console.error('Error fetching products:', error);
+          }
+       };
+
 
       fetchProducts();
 
       socket.on('productUpdated', (data) => {
-        const updatedProduct = data.product;
-  
-  
-        setProducts((prevProducts) => 
-          prevProducts.map((product) =>
-            product._id === updatedProduct._id ? updatedProduct : product
-          )
-        );
-      });
+        const processedProduct = updateProductStatus(data.product);
+
+         setProducts((prevProducts) => 
+        prevProducts.map((product) =>
+          product._id === processedProduct._id ? processedProduct : product
+        )
+      ); 
+    });
   
       return () => {
         socket.off('productUpdated');

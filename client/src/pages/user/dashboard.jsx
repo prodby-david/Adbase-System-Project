@@ -35,8 +35,6 @@ const handleAddToCart = () => {
 const Dashboard = () => {
 
   const [showProducts, setShowProducts] = useState([]);
-  const [totalPrice, setTotalPrice] = useState(0);
-  const [discountCode, setDiscountCode] = useState('');
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [deliveryOption, setDeliveryOption] = useState('delivery');
 
@@ -145,9 +143,15 @@ const Dashboard = () => {
 
 
       const fetchProducts = useCallback(async () => {
-        try {
+         try {
           const response = await axios.get('http://localhost:4200/product');
-          setShowProducts(response.data.products);
+          const products = response.data.products.map(product => {
+            if (product.stocks <= 0 && product.status !== 'Out of Stock') {
+              return { ...product, status: 'Out of Stock' };
+            }
+            return product;
+          });
+          setShowProducts(products);
         } catch (error) {
           console.error('Error fetching products:', error);
         }
@@ -188,12 +192,20 @@ const Dashboard = () => {
       try {
         const response = await axios.post(`http://localhost:4200/purchase`, {
           productId,
-          quantity
+          quantity,
+          deliveryOption
         });
   
         if (response.data.success) {
-          Swal.fire('Success!', 'Product purchased successfully!', 'success');
-          fetchProducts();
+          Swal.fire({
+            title: 'Success!',
+            text: 'Product purchased successfully!',
+            icon: 'success',
+            confirmButtonText: 'Track Order'
+          }).then(() => {
+            navigate('/orders');
+          });
+           fetchProducts();
         } else {
           Swal.fire('Oops!', response.data.message || 'Something went wrong.', 'error');
         }
@@ -232,8 +244,8 @@ const Dashboard = () => {
                     <div className="flex items-center justify-between mt-2 p-2">
 
                       <button
-                        className={`bg-accent-color text-text-color py-2 px-4 rounded mt-3 ${product.status === 'Unavailable' ? 'opacity-50' : ''}`}
-                        disabled={product.status === 'Unavailable'}
+                        className={`bg-accent-color text-text-color py-2 px-4 rounded mt-3 cursor-pointer hover:text-accent-color hover:bg-main-color transition-all ease-in-out duration-300 ${product.status === 'Unavailable' || product.status === "Out of Stock" ? 'opacity-50' : ''}`}
+                        disabled={product.status === 'Unavailable' || product.status === "Out of Stock"}
                         onClick={() => handleBuyNow(product)}
                         >
                         Buy Now

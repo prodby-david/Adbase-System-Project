@@ -16,6 +16,11 @@ const UpdateProduct = async (req, res) => {
         return res.status(404).json({ message: 'Product not found' });
       }
 
+      if (updatedProduct.stocks <= 0 && updatedProduct.status !== 'Out of Stock') {
+        updatedProduct.status = 'Out of Stock';
+        await updatedProduct.save(); 
+      }
+
       io.emit('productUpdated', { product: updatedProduct });
       
       console.log('Emitting productUpdated with:', updatedProduct); 

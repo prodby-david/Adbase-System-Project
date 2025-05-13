@@ -12,7 +12,9 @@ import ForgotPassword from './routers/forgotpassword.js';
 import ResetPassword from './routers/resetpassword.js';
 import ProductRouter from './routers/admin/product.js';
 import logger from './middleware/logger.js';
+import OrderRouter from './routers/order.js';
 import PurchaseRouter from './routers/user/purchase.js';
+import EditProductStatus from './routers/admin/editProductStatus.js';
 import { Server } from 'socket.io';
 import http from 'http';
 
@@ -47,7 +49,7 @@ app.use('/uploads', express.static('uploads'));
 
 app.use(signUpRouter, signInRouter, AdminRouter,
 AdminLoginRouter, CreateFeedback, ForgotPassword, 
-ResetPassword, ProductRouter, PurchaseRouter );
+ResetPassword, ProductRouter, PurchaseRouter, OrderRouter, EditProductStatus );
 
 server.listen(process.env.PORT, () => {
     console.log(`Server is running on PORT: ${process.env.PORT}`);

@@ -29,6 +29,10 @@ const productSchema = new mongoose.Schema({
     image:{
         type:String,
         required:true   
+    },
+    createdBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Admin',
     }
 },  {timestamps: true}
 );

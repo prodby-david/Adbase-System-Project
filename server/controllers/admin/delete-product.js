@@ -1,15 +1,20 @@
 import Product from "../../models/products.js";
+import Order from "../../models/order.js";
 import { io } from '../../index.js'
 
 
 const DeleteProduct = async (req, res) => {
   try {
+    
     const productId = req.params.id; 
+
     const deletedProduct = await Product.findByIdAndDelete(productId); 
 
     if (!deletedProduct) {
       return res.status(404).json({ success: false, message: 'Product not found' });
     }
+
+    await Order.deleteMany({ productId });
 
     io.emit('productDeleted', { productId });
 

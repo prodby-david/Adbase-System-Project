@@ -96,7 +96,7 @@ const DashNavigation = () => {
                 </li>
 
                 <li className='flex flex-col items-center hover:bg-main-color p-5 w-full border-b' onClick={navController}>
-                    <a href="/show-cart" onClick={navController}><FontAwesomeIcon icon={faCartShopping} className='mr-1'/>Show Cart</a>
+                    <a href="/orders" onClick={navController}><FontAwesomeIcon icon={faCartShopping} className='mr-1'/>Check Orders</a>
                 </li>
 
                 <li className='flex flex-col items-center hover:bg-main-color p-5 w-full border-b' onClick={navController}>
