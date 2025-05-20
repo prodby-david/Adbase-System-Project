@@ -18,7 +18,15 @@ const userSchema = mongoose.Schema({
     password:{
         type: String,
         required: true
-    }
+    },
+    cart: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Product'
+    }],
+    favorites: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Product'
+    }],
 });
 
 userSchema.pre('save', async function (next) {

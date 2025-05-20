@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import io from 'socket.io-client';
 import AdminNav from '../../components/admin-nav';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPesoSign } from '@fortawesome/free-solid-svg-icons';
 
 const socket = io('http://localhost:4200');
 
@@ -32,28 +34,29 @@ const AdminOrders = () => {
   return (
     <>
     <AdminNav />
-    <div className="p-5">
-      <h2 className="text-xl font-bold mb-4">Manage Orders</h2>
-      <table className="w-full border">
+    <div className="p-10">
+      <h2 className="text-xl font-bold mb-4 text-accent-color">Manage Orders</h2>
+      <table className="w-full border border-main-color">
         <thead>
-          <tr className="bg-gray-200">
-            <th>Product</th>
-            <th>Quantity</th>
-            <th>Status</th>
-            <th>Change Status</th>
+          <tr className="bg-accent-color text-text-color">
+            <th className='p-5'>Product</th>
+            <th className='p-5'>Quantity</th>
+            <th className='p-5'>Total Price</th>
+            <th className='p-5'>Change Status</th>
           </tr>
         </thead>
         <tbody>
           {orders.map((order) => (
-            <tr key={order._id} className="border-b">
-              <td className="p-2">{order.productName}</td>
-              <td className="p-2">{order.quantity}</td>
-              <td className="p-2">{order.status}</td>
-              <td className="p-2">
+            <tr key={order._id} className="border-b border-main-color text-text-color">
+              <td className="p-4 text-center">{order.productName}</td>
+              <td className="p-4 text-center">{order.quantity}</td>
+              <td className='p-4 text-center'> <FontAwesomeIcon icon={faPesoSign} className='text-sm text-main-color'/>{order.totalPrice}</td>
+              <td className="p-4 text-center">
                 <select
-                    value={order.status}
+                  value={order.status}
                   onChange={(e) => updateStatus(order._id, e.target.value)}
-                  className="border p-1"
+                  className=" text-center p-2 hover:cursor-pointer text-text-color outline-0" 
+                  disabled={order.status === 'Completed' || order.status === 'Cancelled'}
                 >
                   <option value="Pending">Pending</option>
                   <option value="Preparing">Preparing</option>

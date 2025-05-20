@@ -89,7 +89,7 @@ const AdminDashboard = () => {
 
           <div>
 
-            <h2 className='text-2xl text-text-color font-semibold'>Weekly Sales</h2>
+            <h2 className='text-2xl text-text-color font-semibold'>Orders</h2>
             
             <div className='flex items-center mt-7 gap-x-2'>
 

@@ -3,7 +3,7 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import DashNavigation from '../../components/dashnav';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCartShopping, faHeart, faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { faCartShopping, faHeart, faSpinner, faBell } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { io } from  'socket.io-client';
@@ -11,6 +11,8 @@ import { io } from  'socket.io-client';
 
 
 const socket = io('http://localhost:4200');
+
+
 
 
 
@@ -37,14 +39,19 @@ const Dashboard = () => {
   const [showProducts, setShowProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [deliveryOption, setDeliveryOption] = useState('delivery');
-
+  const [showAll, setShowAll] = useState(false);
+  const [cartCount, setCartCount] = useState(0);
+  const [favoritesCount, setFavoritesCount] = useState(0);
+  const visibleProducts = showAll ? showProducts : showProducts.slice(0, 6);
   const navigate = useNavigate();
+  
 
    const handleBuyNow = (product) => {
     setSelectedProduct(product);
 
       Swal.fire({
       title: 'Enter Quantity',
+      html: `<p><strong>Available Stocks:</strong> ${product.stocks}</p>`,
       input: 'number',
       inputValue: 1,
       inputAttributes: {
@@ -196,12 +203,22 @@ const Dashboard = () => {
           deliveryOption
         });
   
-        if (response.data.success) {
+          if (response.data.success) {
+            toast.success("🎉 Order placed successfully!", {
+            position: "bottom-right",
+            autoClose: 3000,
+            style: {
+              background: "#60A5FA",  
+              color: "#fff",
+              fontWeight: 'bold'
+            }
+          });
+
           Swal.fire({
             title: 'Success!',
             text: 'Product purchased successfully!',
             icon: 'success',
-            confirmButtonText: 'Track Order'
+            confirmButtonText: 'Check Order'
           }).then(() => {
             navigate('/orders');
           });
@@ -218,9 +235,36 @@ const Dashboard = () => {
 
   return (
 
+    <>
+
     <div className="min-h-screen bg-bg-color">
 
       <DashNavigation />
+
+       <div className='bg-accent-color flex items-center justify-end gap-x-5 px-10 py-3 text-text-color sticky top-0 z-10 shadow-xs shadow-accent-color'>
+
+        <div className="relative">
+          <FontAwesomeIcon icon={faCartShopping} className='text-md cursor-pointer hover:text-main-color' />
+          {cartCount > 0 && (
+            <span className="absolute -top-2 -right-2 bg-main-color text-text-color text-xs w-5 h-5 flex items-center justify-center rounded-full">
+              {cartCount}
+            </span>
+          )}
+        </div>
+
+        <div className="relative">
+          <FontAwesomeIcon icon={faHeart} className='text-md cursor-pointer hover:text-main-color' />
+          {favoritesCount > 0 && (
+            <span className="absolute -top-2 -right-2 bg-main-color text-text-color text-xs w-5 h-5 flex items-center justify-center rounded-full">
+              {favoritesCount}
+            </span>
+          )}
+        </div>
+
+        <FontAwesomeIcon icon={faBell} className='text-md cursor-pointer hover:text-main-color' />
+        <a href="" className='text-sm p-3 bg-main-color text-text-color rounded-sm'>Track Orders</a>
+
+      </div>
 
       <div className="max-w-6xl mx-auto px-4 py-15">
 
@@ -228,15 +272,14 @@ const Dashboard = () => {
 
         <div className="p-10">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {showProducts.map(product => (
-                  <div key={product._id} className="bg-bg-color shadow-md rounded-lg p-3">
+                {visibleProducts.map(product => (
+                  <div key={product._id} className="bg-bg-color shadow-md rounded-lg p-5">
                   <img src={`http://localhost:4200/uploads/${product.image}`}
                   alt={product.name}
-                  className='rounded-sm mb-2 h-48 w-full object-contain'/>
-                    <h3 className="text-xl font-semibold text-accent-color">{product.name}</h3>
-                    <p className="text-text-color">{product.description}</p>
+                  className='rounded-sm mb-2 h-48 w-full object-contain -z-100'/>
+                    <h3 className="text-2xl font-semibold text-accent-color">{product.name}</h3>
+                    <p className="text-text-color text-sm mt-2">{product.description}</p>
                     <p className="mt-2 font-bold text-lg text-accent-color">₱{product.price}</p>
-                    <p className="text-sm text-text-color">Stocks: {product.stocks}</p>
                     <p className={`text-sm ${product.status === 'Out of Stock' ? 'text-red-500' : 'text-gray-500'}`}>
                       Status: {product.status}
                     </p>
@@ -244,19 +287,22 @@ const Dashboard = () => {
                     <div className="flex items-center justify-between mt-2 p-2">
 
                       <button
-                        className={`bg-accent-color text-text-color py-2 px-4 rounded mt-3 cursor-pointer hover:text-accent-color hover:bg-main-color transition-all ease-in-out duration-300 ${product.status === 'Unavailable' || product.status === "Out of Stock" ? 'opacity-50' : ''}`}
+                        className={`bg-accent-color text-text-color py-2 px-4 rounded mt-3  transition-all ease-in-out duration-300 ${product.status === 'Unavailable' || product.status === "Out of Stock" ? 'cursor-not-allowed ' : 'cursor-pointer hover:text-accent-color hover:bg-main-color'}`}
                         disabled={product.status === 'Unavailable' || product.status === "Out of Stock"}
                         onClick={() => handleBuyNow(product)}
                         >
                         Buy Now
                       </button>
 
-                      
                       <div className='flex gap-4'>
 
                         <div className="relative group inline-block">
 
-                          <FontAwesomeIcon icon={faCartShopping} className='text-lg text-main-color mt-3 hover:cursor-pointer hover:text-accent-color' onClick={handleAddToCart}/>
+                          <FontAwesomeIcon icon={faCartShopping} className='text-lg text-main-color mt-3 hover:cursor-pointer hover:text-accent-color' 
+                          onClick={() => {
+                            setCartCount(prev => prev + 1);
+                            handleAddToCart(); 
+                          }}/>
 
                           <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-accent-color text-text-color text-xs px-3 py-1 rounded opacity-0 group-hover:opacity-100 transition pointer-events-none w-16 text-center">
                           Add to cart
@@ -266,7 +312,11 @@ const Dashboard = () => {
                         
                         <div className="relative group inline-block">
 
-                          <FontAwesomeIcon icon={faHeart} className='text-lg text-main-color mt-3 hover:cursor-pointer hover:text-accent-color' onClick={handleAddToFavorites}/>
+                          <FontAwesomeIcon icon={faHeart} className='text-lg text-main-color mt-3 hover:cursor-pointer hover:text-accent-color'
+                           onClick={() => {
+                              setFavoritesCount(prev => prev + 1);
+                              handleAddToFavorites();
+                            }}  />
 
                            <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-accent-color text-text-color text-xs px-3 py-1 rounded opacity-0 group-hover:opacity-100 transition pointer-events-none">
                           Add to favorites
@@ -280,6 +330,17 @@ const Dashboard = () => {
                   </div>
                 ))}
               </div>
+
+              {!showAll && showProducts.length > 6 && (
+                <div className="text-end mt-4">
+                  <button
+                    onClick={() => setShowAll(true)}
+                    className="text-accent-color underline font-medium transition duration-300 cursor-pointer"
+                  >
+                    See More
+                  </button>
+                </div>
+              )}
             </div>
 
         {showProducts.length === 0 && (
@@ -291,7 +352,9 @@ const Dashboard = () => {
         )}
       </div>
     </div>
+    </>
   )
 }
+
 
 export default Dashboard;

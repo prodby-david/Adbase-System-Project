@@ -75,11 +75,15 @@ const AdminNav = () => {
         </li>
 
         <li className='w-full text-center text-md border-0 border-b-1 p-5 border-main-color'>
-          <a href="show-products" onClick={navController} className='text-text-color'><FontAwesomeIcon icon={faBoxOpen} className='text-main-color mr-2'/>Show All Product</a>
+          <a href="/admin-orders" className='text-text-color'><FontAwesomeIcon icon={faPenToSquare} className='text-main-color mr-2'/>Manage Orders</a>
         </li>
 
         <li className='w-full text-center text-md border-0 border-b-1 p-5 border-main-color'>
           <a href="/create-product" className='text-text-color'><FontAwesomeIcon icon={faPenToSquare} className='text-main-color mr-2'/>Create Product</a>
+        </li>
+
+        <li className='w-full text-center text-md border-0 border-b-1 p-5 border-main-color'>
+          <a href="show-products" onClick={navController} className='text-text-color'><FontAwesomeIcon icon={faBoxOpen} className='text-main-color mr-2'/>Show All Product</a>
         </li>
 
         <li className='w-full text-center text-md border-0 border-b-1 p-5 border-main-color'>

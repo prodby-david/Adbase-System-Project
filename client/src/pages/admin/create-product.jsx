@@ -82,26 +82,26 @@ const CreateProduct = () => {
           <form className='mt-10' onSubmit={handleSubmit}>
             <label className='text-md font-medium text-text-color'>Product Name</label>
             <input type="text" name='name' value={productData.name} onChange={handleChange}
-              className='w-full px-4 py-2 border border-accent-color rounded-sm' placeholder='Enter product name' />
+              className='w-full px-4 py-2 border border-accent-color rounded-sm outline-0' placeholder='Enter product name' />
 
             <label className='mt-3 text-md font-medium text-text-color'>Product Description</label>
-            <textarea name="description" value={productData.description} onChange={handleChange} rows={3}
-              className='w-full px-4 py-2 border border-accent-color rounded-sm resize-none' placeholder='Enter product description' />
+            <textarea name="description" maxLength={50} value={productData.description} onChange={handleChange} rows={3}
+              className='w-full px-4 py-2 border border-accent-color rounded-sm outline-0 resize-none' placeholder='Enter product description' />
 
             <label className='mt-3 text-md font-medium text-text-color'>Price (₱)</label>
             <input type="number" name='price' value={productData.price} onChange={handleChange} step="0.01"
-              className='w-full px-4 py-2 border border-accent-color rounded-sm' />
+              className='w-full px-4 py-2 border border-accent-color outline-0 rounded-sm' />
 
             <label className='mt-3 text-md font-medium text-text-color'>Stocks Available</label>
             <input type="number" name='stocks' value={productData.stocks} onChange={handleChange}
-              className='w-full px-4 py-2 border border-accent-color rounded-sm' />
+              className='w-full px-4 py-2 border border-accent-color outline-0 rounded-sm' />
 
             <label className='mt-3 text-md font-medium text-text-color'>Product Status</label>
             <div className='flex gap-x-5 mt-1'>
               {["Available", "Out of Stock", "Unavailable"].map((status) => (
                 <label key={status}>
                   <input type="radio" name="status" value={status} checked={productData.status === status}
-                    onChange={handleChange} className='mr-1' />
+                    onChange={handleChange} className='mr-1 outline-0 cursor-pointer' />
                   {status}
                 </label>
               ))}
@@ -110,7 +110,8 @@ const CreateProduct = () => {
             <label className='mt-3 text-md font-medium text-text-color'>Product Image</label>
             <input type="file" accept="image/*" onChange={handleImageChange}
               name='image'
-              className='w-full px-4 py-2 border border-accent-color rounded-sm' />
+              className='w-full px-4 py-2 border border-accent-color rounded-sm cursor-pointer' 
+            />
 
             <div className='flex justify-end gap-x-3 mt-5'>
               <button type='button' onClick={() => navigate('/admin-dashboard')}
