@@ -8,7 +8,12 @@ import { faPesoSign } from '@fortawesome/free-solid-svg-icons';
 const socket = io('http://localhost:4200');
 
 const AdminOrders = () => {
+
   const [orders, setOrders] = useState([]);
+  const [statusFilter, setStatusFilter] = useState('All');
+  const [visibleCount, setVisibleCount] = useState(10);
+
+
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -18,12 +23,16 @@ const AdminOrders = () => {
 
     fetchOrders();
 
-    socket.on('orderStatusUpdated', () => {
-    fetchOrders();
-    });
+    socket.on('orderStatusUpdated', fetchOrders);
+    socket.on('newOrder', fetchOrders);      
+    socket.on('productUpdated', fetchOrders); 
 
-        return () => socket.off('orderStatusUpdated');
-    }, []);
+    return () => {
+    socket.off('orderStatusUpdated');
+    socket.off('newOrder');        
+    socket.off('productUpdated'); 
+  };
+}, []);
 
   const updateStatus = async (orderId, newStatus) => {
     await axios.put(`http://localhost:4200/admin-orders/${orderId}`, {
@@ -34,8 +43,25 @@ const AdminOrders = () => {
   return (
     <>
     <AdminNav />
-    <div className="p-10">
-      <h2 className="text-xl font-bold mb-4 text-accent-color">Manage Orders</h2>
+      <div className="p-10">
+        <h2 className="text-xl font-bold mb-4 text-accent-color">Manage Orders</h2>
+        <div className="mb-4">
+      <label htmlFor="statusFilter" className="mr-2 font-semibold text-main-color">Filter by Status:</label>
+      <select
+        id="statusFilter"
+        value={statusFilter}
+        onChange={(e) => setStatusFilter(e.target.value)}
+        className="p-2 border border-main-color rounded outline-none cursor-pointer"
+      >
+        <option value="All">All</option>
+        <option value="Pending">Pending</option>
+        <option value="Preparing">Preparing</option>
+        <option value="Out for Delivery">Out for Delivery</option>
+        <option value="Completed">Completed</option>
+        <option value="Cancelled">Cancelled</option>
+      </select>
+    </div>
+
       <table className="w-full border border-main-color">
         <thead>
           <tr className="bg-accent-color text-text-color">
@@ -46,7 +72,8 @@ const AdminOrders = () => {
           </tr>
         </thead>
         <tbody>
-          {orders.map((order) => (
+          {orders.filter(order => statusFilter === 'All' || order.status === statusFilter)
+          .slice(0,visibleCount).map((order) => (
             <tr key={order._id} className="border-b border-main-color text-text-color">
               <td className="p-4 text-center">{order.productName}</td>
               <td className="p-4 text-center">{order.quantity}</td>
@@ -69,6 +96,18 @@ const AdminOrders = () => {
           ))}
         </tbody>
       </table>
+
+      {orders.filter(order => statusFilter === 'All' || order.status === statusFilter).length > visibleCount && (
+        <div className="mt-4 text-center">
+          <button
+            onClick={() => setVisibleCount(prev => prev + 10)}
+            className="bg-main-color text-white px-4 py-2 rounded hover:bg-accent-color transition duration-300 cursor-pointer"
+          >
+            See More
+          </button>
+        </div>
+      )}
+
     </div>
     </>
   );

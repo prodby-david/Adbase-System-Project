@@ -7,6 +7,7 @@ const Purchase = async (req, res) => {
 
   try {
     const product = await Product.findById(productId);
+    
     if (!product || product.stocks < quantity) {
       return res.status(400).json({ success: false, message: 'Not enough stocks.' });
     }

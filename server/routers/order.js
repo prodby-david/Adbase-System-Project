@@ -1,5 +1,7 @@
 import express from 'express';
 import Order from '../models/order.js';
+import Product from '../models/products.js';
+import { io } from '../index.js'; 
 
 
 const OrderRouter = express.Router();
@@ -50,6 +52,37 @@ OrderRouter.get('/orders', async (req, res) => {
     res.status(500).json({ success: false, message: 'Failed to fetch orders' });
   }
 });
+
+OrderRouter.put('/orders/:id', async (req, res) => {
+  try {
+    const order = await Order.findById(req.params.id);
+    if (!order) {
+      return res.status(404).json({ success: false, message: 'Order not found' });
+    }
+
+    if (order.status !== 'Pending') {
+      return res.status(400).json({ success: false, message: 'Only pending orders can be cancelled' });
+    }
+
+    const product = await Product.findById(order.productId);
+    if (!product) {
+      return res.status(404).json({ success: false, message: 'Product not found' });
+    }
+
+    product.stocks += order.quantity;
+
+    order.status = 'Cancelled';
+    await order.save();
+
+    res.json({ success: true, message: 'Order cancelled successfully' });
+    io.emit('newOrder');
+
+  } catch (err) {
+    console.error('Cancel order error:', err);
+    res.status(500).json({ success: false, message: 'Failed to cancel order' });
+  }
+});
+
 
 
 

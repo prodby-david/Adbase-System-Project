@@ -12,28 +12,6 @@ import { io } from  'socket.io-client';
 
 const socket = io('http://localhost:4200');
 
-
-
-
-
-const handleAddToFavorites = () => {
-  toast.success("Added to favorites", {
-    style: {
-      background: "#F4A460", 
-      color: "#5C4033",     
-    },
-  });
-};
-
-const handleAddToCart = () => {
-  toast.success("Added to cart", {
-    style: {
-      background: "#F4A460", 
-      color: "#5C4033",     
-    },
-  });
-};
-
 const Dashboard = () => {
 
   const [showProducts, setShowProducts] = useState([]);
@@ -44,9 +22,27 @@ const Dashboard = () => {
   const [favoritesCount, setFavoritesCount] = useState(0);
   const visibleProducts = showAll ? showProducts : showProducts.slice(0, 6);
   const navigate = useNavigate();
-  
 
-   const handleBuyNow = (product) => {
+  const handleAddToFavorites = () => {
+  toast.success("Added to favorites", {
+    style: {
+      background: "#F4A460", 
+      color: "#5C4033",     
+    },
+  });
+};
+
+const handleAddToCart = async(product) => {
+      toast.success("Added to cart", {
+        style: {
+        background: "#F4A460", 
+        color: "#5C4033",     
+      },
+      });
+};
+  
+  const handleBuyNow = (product) => {
+
     setSelectedProduct(product);
 
       Swal.fire({
@@ -158,7 +154,7 @@ const Dashboard = () => {
             }
             return product;
           });
-          setShowProducts(products);
+          setShowProducts(products.reverse());
         } catch (error) {
           console.error('Error fetching products:', error);
         }
@@ -262,7 +258,7 @@ const Dashboard = () => {
         </div>
 
         <FontAwesomeIcon icon={faBell} className='text-md cursor-pointer hover:text-main-color' />
-        <a href="" className='text-sm p-3 bg-main-color text-text-color rounded-sm'>Track Orders</a>
+          
 
       </div>
 
@@ -276,7 +272,7 @@ const Dashboard = () => {
                   <div key={product._id} className="bg-bg-color shadow-md rounded-lg p-5">
                   <img src={`http://localhost:4200/uploads/${product.image}`}
                   alt={product.name}
-                  className='rounded-sm mb-2 h-48 w-full object-contain -z-100'/>
+                  className='rounded-sm mb-2 h-48 w-full object-contain'/>
                     <h3 className="text-2xl font-semibold text-accent-color">{product.name}</h3>
                     <p className="text-text-color text-sm mt-2">{product.description}</p>
                     <p className="mt-2 font-bold text-lg text-accent-color">₱{product.price}</p>

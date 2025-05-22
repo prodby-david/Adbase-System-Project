@@ -77,15 +77,19 @@ const CreateProduct = () => {
       </div>
 
       <div className='flex flex-col items-center justify-center min-h-screen px-5'>
+
         <div className='shadow-sm shadow-main-color rounded-xl py-5 px-10 bg-bg-color w-full max-w-2xl'>
+
           <h2 className='text-[28px] text-accent-color font-semibold'>Create new product</h2>
+
           <form className='mt-10' onSubmit={handleSubmit}>
+
             <label className='text-md font-medium text-text-color'>Product Name</label>
             <input type="text" name='name' value={productData.name} onChange={handleChange}
               className='w-full px-4 py-2 border border-accent-color rounded-sm outline-0' placeholder='Enter product name' />
 
             <label className='mt-3 text-md font-medium text-text-color'>Product Description</label>
-            <textarea name="description" maxLength={50} value={productData.description} onChange={handleChange} rows={3}
+            <textarea name="description" maxLength={100} value={productData.description} onChange={handleChange} rows={3}
               className='w-full px-4 py-2 border border-accent-color rounded-sm outline-0 resize-none' placeholder='Enter product description' />
 
             <label className='mt-3 text-md font-medium text-text-color'>Price (₱)</label>
@@ -98,7 +102,7 @@ const CreateProduct = () => {
 
             <label className='mt-3 text-md font-medium text-text-color'>Product Status</label>
             <div className='flex gap-x-5 mt-1'>
-              {["Available", "Out of Stock", "Unavailable"].map((status) => (
+              {["Available", "Unavailable"].map((status) => (
                 <label key={status}>
                   <input type="radio" name="status" value={status} checked={productData.status === status}
                     onChange={handleChange} className='mr-1 outline-0 cursor-pointer' />
@@ -114,14 +118,24 @@ const CreateProduct = () => {
             />
 
             <div className='flex justify-end gap-x-3 mt-5'>
+
               <button type='button' onClick={() => navigate('/admin-dashboard')}
-                className='px-4 py-2 border border-accent-color text-text-color rounded-md hover:bg-main-color'>Cancel</button>
+                className='px-4 py-2 border border-accent-color text-text-color rounded-md hover:bg-main-color'>Cancel
+              </button>
+
               <button type='submit'
-                className='px-4 py-2 bg-accent-color text-white rounded-md hover:bg-main-color'>Create</button>
+                className='px-4 py-2 bg-accent-color text-white rounded-md hover:bg-main-color'>
+                  Create
+              </button>
+
             </div>
+
           </form>
+
         </div>
+        
       </div>
+
     </>
   );
 };

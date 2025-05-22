@@ -15,6 +15,8 @@ import logger from './middleware/logger.js';
 import OrderRouter from './routers/order.js';
 import PurchaseRouter from './routers/user/purchase.js';
 import EditProductStatus from './routers/admin/editProductStatus.js';
+import AddToCartRouter from './routers/user/addToCart.js';
+import FavoritesRouter from './routers/user/addToFavorites.js';
 import { Server } from 'socket.io';
 import http from 'http';
 
@@ -31,9 +33,27 @@ const io = new Server(server, {
   }
 });
 
+const userSocketMap = new Map();
+
 io.on('connection', (socket) => {
   console.log('A user connected:', socket.id);
+
+  socket.on('registerUser', (userId) => {
+    userSocketMap.set(userId, socket.id);
+    console.log(`User ${userId} registered with socket ID ${socket.id}`);
+  });
+
+  socket.on('disconnect', () => {
+    for (const [userId, id] of userSocketMap.entries()) {
+      if (id === socket.id) {
+        userSocketMap.delete(userId);
+        break;
+      }
+    }
+    console.log('A user disconnected:', socket.id);
+  });
 });
+
 
 app.use(logger);
 
@@ -49,14 +69,15 @@ app.use('/uploads', express.static('uploads'));
 
 app.use(signUpRouter, signInRouter, AdminRouter,
 AdminLoginRouter, CreateFeedback, ForgotPassword, 
-ResetPassword, ProductRouter, PurchaseRouter, OrderRouter, EditProductStatus );
+ResetPassword, ProductRouter, PurchaseRouter, 
+OrderRouter, EditProductStatus, AddToCartRouter, FavoritesRouter);
 
 server.listen(process.env.PORT, () => {
     console.log(`Server is running on PORT: ${process.env.PORT}`);
     connectDB();
 });
 
-export { io };
+export { io, userSocketMap };
 
 
 

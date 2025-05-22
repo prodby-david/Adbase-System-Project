@@ -26,17 +26,14 @@ import ShowProducts from './pages/admin/showproduct';
 import { ToastContainer } from 'react-toastify';
 import Orders from './pages/user/orders';
 import AdminOrders from './pages/admin/admin-orders';
-
 import 'react-toastify/dist/ReactToastify.css';
 
 
-function App() {
+function App() {  
 
   useEffect(() => {
     AOS.init(); 
   }, []);
-
-
 
   return (
     
@@ -83,7 +80,6 @@ function App() {
                       </ProtectedRoute>
                       } 
                   />
-
               
                 {/* Admin Routes */}
                 <Route path='/admin-registration' element={<AdminRegistration />} />     

@@ -1,13 +1,11 @@
 import express from 'express';
 import Order from '../../models/order.js';
-import { io } from '../../index.js';
+import { io, userSocketMap } from '../../index.js';
 
 const EditProductStatus = express.Router();
 
 EditProductStatus.put('/admin-orders/:orderId', async (req, res) => {
-
   try {
-
     const { status } = req.body;
     const { orderId } = req.params;
 
@@ -21,12 +19,18 @@ EditProductStatus.put('/admin-orders/:orderId', async (req, res) => {
       return res.status(404).json({ message: 'Order not found' });
     }
 
-  
-    io.emit('orderStatusUpdated', updatedOrder); 
+    const userId = updatedOrder.userId; 
+    const socketId = userSocketMap.get(userId);
 
+    if (socketId) {
+      io.to(socketId).emit('orderStatusUpdated', updatedOrder);
+    }
+    
+    io.emit('orderStatusUpdated', updatedOrder);
     res.json({ message: 'Order status updated', order: updatedOrder });
   } catch (err) {
-
+    console.error(err);
+    res.status(500).json({ message: 'Server error' });
   }
 });
 

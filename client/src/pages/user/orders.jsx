@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import io from 'socket.io-client';
+import Swal from 'sweetalert2';
 
 const socket = io('http://localhost:4200');
 
@@ -27,7 +28,10 @@ const shouldPulse = (status) => {
 
 
 const UserOrders = () => {
+
   const [orders, setOrders] = useState([]);
+  const [showAll, setShowAll] = useState(false);
+  const handleSeeMore = () => setShowAll(true);
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -49,8 +53,51 @@ const UserOrders = () => {
       };
   }, []);
 
+  const handleCancelOrder = async (orderId) => {
+  const result = await Swal.fire({
+    title: 'Are you sure?',
+    text: 'Do you really want to cancel this order?',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#3085d6',
+    confirmButtonText: 'Yes, cancel it!',
+    cancelButtonText: 'No, keep it'
+  });
+
+  if (result.isConfirmed) {
+    try {
+      const res = await axios.put(`http://localhost:4200/orders/${orderId}`);
+      if (res.data.success) {
+        setOrders(prevOrders =>
+          prevOrders.map(order =>
+            order._id === orderId ? { ...order, status: 'Cancelled' } : order
+          )
+        );
+        socket.emit('orderStatusUpdated');
+
+        Swal.fire({
+          title: 'Cancelled!',
+          text: 'Your order has been cancelled.',
+          icon: 'success',
+          timer: 2000,
+          showConfirmButton: false
+        });
+      }
+    } catch (err) {
+      console.error('Failed to cancel order', err);
+      Swal.fire({
+        title: 'Error!',
+        text: 'Failed to cancel the order. Please try again.',
+        icon: 'error'
+      });
+    }
+  }
+};
+
+
   return (
-    <div className="max-w-5xl mx-auto pt-10 px-4">
+    <div className="max-w-5xl mx-auto py-10 px-4">
       <h2 className="text-2xl font-semibold text-accent-color mb-4">Your Orders</h2>
       <table className="w-full text-left border-collapse bg-white shadow">
         <thead className="bg-accent-color text-text-color">
@@ -64,7 +111,7 @@ const UserOrders = () => {
           </tr>
         </thead>
         <tbody>
-          {orders.map(order => (
+          {(showAll ? orders : orders.slice(0, 10)).map(order => (
             <tr key={order._id} className="border-b text-text-color">
               <td className="p-5 text-center">{order.productName}</td>
               <td className="p-5 text-center">{order.quantity}</td>
@@ -94,6 +141,18 @@ const UserOrders = () => {
           ))}
         </tbody>
       </table>
+      
+      {!showAll && orders.length > 10 && (
+          <div className="text-center mt-4">
+            <button
+              className="bg-main-color text-white px-4 py-2 rounded hover:bg-accent-color transition duration-300 cursor-pointer"
+              onClick={handleSeeMore}
+            >
+              See More
+            </button>
+          </div>
+        )}
+
     </div>
   );
 };

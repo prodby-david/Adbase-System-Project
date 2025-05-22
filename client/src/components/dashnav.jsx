@@ -81,7 +81,7 @@ const DashNavigation = () => {
   return (
 
     <>
-        <div className={`fixed flex flex-col justify-center gap-y-20 h-full w-[320px] bg-accent-color shadow-md shadow-accent-color ${isOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-500 z-100}`}>
+        <div className={`fixed flex flex-col justify-center gap-y-20 h-full w-[320px] bg-accent-color shadow-lg shadow-accent-color ${isOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-500 z-50}`}>
 
             <div className='flex flex-col items-center p-5 text-text-color w-full'>
               <FontAwesomeIcon icon={faUserCircle} className='text-6xl'/>
