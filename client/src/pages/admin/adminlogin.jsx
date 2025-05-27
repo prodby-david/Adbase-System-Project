@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import { useAdminContext } from '../../context/adminContext';
 
 
+const baseUrl = import.meta.env.VITE_BACKEND_BASE_URL;
+
 const AdminLogin = () => {
 
   const [adminData, setAdminData] = useState({
@@ -57,7 +59,7 @@ const AdminLogin = () => {
 
     try {
 
-      const adminLogin = await axios.post('http://localhost:4200/api/admin/sign-in', adminData, {withCredentials: true});
+      const adminLogin = await axios.post(`${baseUrl}/api/admin/sign-in`, adminData, {withCredentials: true});
 
       if(adminLogin?.data?.success){
         setAdminData({

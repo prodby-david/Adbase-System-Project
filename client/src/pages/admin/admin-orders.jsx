@@ -5,7 +5,9 @@ import AdminNav from '../../components/admin-nav';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPesoSign } from '@fortawesome/free-solid-svg-icons';
 
-const socket = io('http://localhost:4200');
+const baseUrl = import.meta.env.VITE_BACKEND_BASE_URL;
+const socket = io(baseUrl);
+
 
 const AdminOrders = () => {
 
@@ -17,7 +19,7 @@ const AdminOrders = () => {
 
   useEffect(() => {
     const fetchOrders = async () => {
-        const res = await axios.get('http://localhost:4200/admin-orders');
+        const res = await axios.get(`${baseUrl}/admin-orders`);
         setOrders(res.data.orders);
     };
 
@@ -35,7 +37,7 @@ const AdminOrders = () => {
 }, []);
 
   const updateStatus = async (orderId, newStatus) => {
-    await axios.put(`http://localhost:4200/admin-orders/${orderId}`, {
+    await axios.put(`${baseUrl}/admin-orders/${orderId}`, {
       status: newStatus,
     });
   };

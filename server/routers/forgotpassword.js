@@ -36,7 +36,7 @@ ForgotPassword.post('/api/forgot-password', async (req, res) => {
             from: `Ovenly Hazel Cookie Shop <${process.env.EMAIL_USER}>`,
             to: email,  
             subject: 'Password Reset',
-            html: `<p>Click <a href="http://localhost:5173/reset-password/${token}">here</a> to reset your password.</p>`,
+            html: `<p>Click <a href="${process.env.FRONTEND_URL}/reset-password/${token}">here</a> to reset your password.</p>`,
           });
           
     }catch(err){

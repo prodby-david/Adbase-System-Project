@@ -9,8 +9,8 @@ import { toast } from 'react-toastify';
 import { io } from  'socket.io-client';
 
 
-
-const socket = io('http://localhost:4200');
+const baseUrl = import.meta.env.VITE_BACKEND_BASE_URL;
+const socket = io(baseUrl);
 
 const Dashboard = () => {
 
@@ -181,7 +181,7 @@ useEffect(() => {
 
       const fetchProducts = useCallback(async () => {
          try {
-          const response = await axios.get('http://localhost:4200/product');
+          const response = await axios.get(`${baseUrl}/product`);
           const products = response.data.products.map(product => {
             if (product.stocks <= 0 && product.status !== 'Out of Stock') {
               return { ...product, status: 'Out of Stock' };
@@ -227,7 +227,7 @@ useEffect(() => {
     }
 
       try {
-        const response = await axios.post(`http://localhost:4200/purchase`, {
+        const response = await axios.post(`${baseUrl}/purchase`, {
           productId,
           quantity,
           deliveryOption
@@ -336,7 +336,7 @@ useEffect(() => {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {visibleProducts.map(product => (
                   <div key={product._id} className="bg-bg-color shadow-md rounded-lg p-5 ">
-                  <img src={`http://localhost:4200/uploads/${product.image}`}
+                  <img src={`${baseUrl}/uploads/${product.image}`}
                   alt={product.name}
                   className='rounded-sm mb-2 h-48 w-full object-contain'/>
                     <h3 className="text-2xl font-semibold text-accent-color">{product.name}</h3>
@@ -356,7 +356,7 @@ useEffect(() => {
                         Buy Now
                       </button>
 
-                      <div className='flex gap-4'>
+                      <div className='flex gap-4 items-center'>
 
                         <div className="relative group inline-block">
 
@@ -377,11 +377,14 @@ useEffect(() => {
                         
                         <div className="relative group inline-block">
 
-                           <FontAwesomeIcon
+                          <div className="flex justify-between mt-4">
+                            <FontAwesomeIcon
                               icon={faHeart}
                               className="text-xl text-main-color cursor-pointer hover:text-accent-color"
                               onClick={() => handleAddToFavorites(product)}
                             />
+                          </div>
+                           
 
                            <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-accent-color text-text-color text-xs px-3 py-1 rounded opacity-0 group-hover:opacity-100 transition pointer-events-none">
                           Add to favorites

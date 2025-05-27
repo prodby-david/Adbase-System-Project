@@ -3,7 +3,8 @@ import axios from 'axios';
 import io from 'socket.io-client';
 import Swal from 'sweetalert2';
 
-const socket = io('http://localhost:4200');
+const baseUrl = import.meta.env.VITE_BACKEND_BASE_URL;
+const socket = io(baseUrl);
 
 const getStatusColor = (status) => {
   switch (status) {
@@ -36,7 +37,7 @@ const UserOrders = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const res = await axios.get(`http://localhost:4200/orders`);
+        const res = await axios.get(`${baseUrl}/orders`);
         setOrders(res.data.orders);
       } catch (err) {
         console.error('Failed to fetch orders', err);
@@ -67,7 +68,7 @@ const UserOrders = () => {
 
   if (result.isConfirmed) {
     try {
-      const res = await axios.put(`http://localhost:4200/orders/${orderId}`);
+      const res = await axios.put(`${baseUrl}/orders/${orderId}`);
       if (res.data.success) {
         setOrders(prevOrders =>
           prevOrders.map(order =>

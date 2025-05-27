@@ -5,6 +5,8 @@ import AdminNav from '../../components/admin-nav';
 import { useNavigate } from 'react-router-dom';
 
 
+const baseUrl = import.meta.env.VITE_BACKEND_BASE_URL;
+
 const CreateProduct = () => {
   const [productData, setProductData] = useState({
     name: '',
@@ -38,7 +40,7 @@ const CreateProduct = () => {
       formData.append('status', productData.status);
       formData.append('image', productData.image);
 
-      const response = await axios.post('http://localhost:4200/create-product', formData, {
+      const response = await axios.post(`${baseUrl}/create-product`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

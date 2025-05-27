@@ -5,6 +5,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faEyeSlash, faEye, faXmark } from '@fortawesome/free-solid-svg-icons';
 
+const baseUrl = import.meta.env.VITE_BACKEND_BASE_URL;
+
 const ResetPassword = () => {
 
   const { token } = useParams();
@@ -45,7 +47,7 @@ const ResetPassword = () => {
 
     try{
 
-      const resetpass = await axios.post(`http://localhost:4200/api/reset-password/${token}`, {
+      const resetpass = await axios.post(`${baseUrl}/api/reset-password/${token}`, {
         password,
       }, { withCredentials: true });
 

@@ -6,7 +6,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
 import { io } from 'socket.io-client';
 
-const socket = io('http://localhost:4200');
+
+const baseUrl = import.meta.env.VITE_BACKEND_BASE_URL;
+const socket = io(baseUrl);
 
 const ShowProducts = () => {
 
@@ -24,7 +26,7 @@ const ShowProducts = () => {
 
         const fetchProducts = async () => {
           try {
-            const response = await axios.get('http://localhost:4200/product');
+            const response = await axios.get(`${baseUrl}/product`);
             const updatedProducts = response.data.products
             .map(product => updateProductStatus(product))
             .reverse(); 
@@ -66,7 +68,7 @@ const ShowProducts = () => {
         });
 
         if(result.isConfirmed) {
-          await axios.delete(`http://localhost:4200/product/${productId}`);
+          await axios.delete(`${baseUrl}/product/${productId}`);
           setProducts(products.filter(product => product._id !== productId));
           Swal.fire('Deleted!', 'Your product has been deleted.', 'success');
         }
@@ -114,7 +116,7 @@ const ShowProducts = () => {
         
       try {
 
-        const response = await axios.put(`http://localhost:4200/product/${product._id}`, updatedProduct);
+        const response = await axios.put(`${baseUrl}/product/${product._id}`, updatedProduct);
 
         Swal.fire('Updated!', 'The product has been updated.', 'success');
 
@@ -145,7 +147,7 @@ const ShowProducts = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {Array.isArray(products) && products.length > 0 ? (products.map(product => (
           <div key={product._id} className="bg-bg-color shadow-md rounded-lg p-5">
-            <img src={`http://localhost:4200/uploads/${product.image}`}
+            <img src={`${baseUrl}/uploads/${product.image}`}
             alt={product.name}  className='rounded-sm mb-2 h-48 w-full object-contain'/>
             <h3 className="text-xl font-semibold text-accent-color">{product.name}</h3>
             <p className="text-text-color">{product.description}</p>

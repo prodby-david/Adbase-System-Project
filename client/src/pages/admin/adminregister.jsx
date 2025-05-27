@@ -3,6 +3,8 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 
+const baseUrl = import.meta.env.VITE_BACKEND_BASE_URL;
+
 const AdminRegistration = () => {
 
   const [adminData, setAdminData] = useState({
@@ -35,7 +37,7 @@ const AdminRegistration = () => {
     }
 
     try {
-      const response = await axios.post('http://localhost:4200/api/admin-registration', adminData);
+      const response = await axios.post(`${baseUrl}/api/admin-registration`, adminData);
 
       if (response.data.message) {
         Swal.fire({

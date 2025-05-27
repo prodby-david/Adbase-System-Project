@@ -4,6 +4,8 @@ import Swal from 'sweetalert2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 
+const baseUrl = import.meta.env.VITE_BACKEND_BASE_URL;
+
 const ForgotPassword = () => {
 
   const [ email, setEmail ] = useState('');
@@ -30,7 +32,7 @@ const ForgotPassword = () => {
     setLoading(true);
 
     try{
-        const response = await axios.post('http://localhost:4200/api/forgot-password', {
+        const response = await axios.post(`${baseUrl}/api/forgot-password`, {
           email,
         }, { withCredentials: true });
 

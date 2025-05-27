@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'
 import Navigation from '../components/navigation';
 import axios from 'axios';
 
+const baseUrl = import.meta.env.VITE_BACKEND_BASE_URL;
+
 const Feedback = () => {
 
     const [feedback, setFeedback] = useState([]);
@@ -9,7 +11,7 @@ const Feedback = () => {
       useEffect(() => {
         const fetchFeedback = async () => {
             try {
-                const response = await axios.get('http://localhost:4200/api/user-feedback');
+                const response = await axios.get(`${baseUrl}/api/user-feedback`);
                 setFeedback(response.data);
             } catch (error) {
                 console.error('Error fetching feedback:', error.message);

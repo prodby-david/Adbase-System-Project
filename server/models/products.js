@@ -28,7 +28,13 @@ const productSchema = new mongoose.Schema({
     },
     image:{
         type:String,
-        required:true   
+        required:true,
+        unique: true
+    },
+    imageHash: {
+        type: String,
+        required: true,
+        unique: true
     },
     createdBy: {
         type: mongoose.Schema.Types.ObjectId,

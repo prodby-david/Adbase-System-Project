@@ -6,6 +6,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faCookieBite, faChevronLeft} from "@fortawesome/free-solid-svg-icons";
 
 
+const baseUrl = import.meta.env.VITE_BACKEND_BASE_URL;
+
+
 const SignUp = () => {
 
   const [userData, setUserData] = useState({
@@ -74,7 +77,7 @@ const SignUp = () => {
 
       try{
 
-        const register = await axios.post('http://localhost:4200/api/signup', userData);
+        const register = await axios.post(`${baseUrl}/api/signup`, userData);
         console.log('User registered', register.data);
 
         const data = register.data;

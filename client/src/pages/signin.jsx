@@ -6,6 +6,9 @@ import Swal from 'sweetalert2'
 import { useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../context/authContext';
 
+
+const baseUrl = import.meta.env.VITE_BACKEND_BASE_URL;
+
 const SignIn = () => {
 
   const [userData, setUserData] = useState({
@@ -51,7 +54,7 @@ const SignIn = () => {
 
     try{
       
-        const login = await axios.post('http://localhost:4200/api/signin', userData, {withCredentials: true});
+        const login = await axios.post(`${baseUrl}/api/signin`, userData, {withCredentials: true});
 
         setUser(login.data);
 

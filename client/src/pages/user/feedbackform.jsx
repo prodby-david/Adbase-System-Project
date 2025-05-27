@@ -4,6 +4,8 @@ import Swal from 'sweetalert2';
 import axios from 'axios';
 import DashNavigation from '../../components/dashnav';
 
+const baseUrl = import.meta.env.VITE_BACKEND_BASE_URL;
+
 const FeedbackForm = () => {
 
   const [userFeedbackData, setUserFeedbackData] = useState({
@@ -40,7 +42,7 @@ const FeedbackForm = () => {
 
     try {
 
-       await axios.post('http://localhost:4200/api/user-feedback', userFeedbackData, {withCredentials: true});
+       await axios.post(`${baseUrl}/api/user-feedback`, userFeedbackData, {withCredentials: true});
 
        Swal.fire({
         title: 'Feedback submitted.',
