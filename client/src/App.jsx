@@ -27,6 +27,9 @@ import { ToastContainer } from 'react-toastify';
 import Orders from './pages/user/orders';
 import AdminOrders from './pages/admin/admin-orders';
 import 'react-toastify/dist/ReactToastify.css';
+import CartPage from './pages/user/cart';
+import FavoritesPage from './pages/user/favorites';
+
 
 
 function App() {  
@@ -62,6 +65,20 @@ function App() {
                   </ProtectedRoute>
                   } 
                   />
+
+                <Route path='/cart' element={
+                  <ProtectedRoute>
+                    <CartPage />
+                  </ProtectedRoute>
+                  } 
+                />
+
+                <Route path='/favorites' element={
+                  <ProtectedRoute>
+                    <FavoritesPage />
+                  </ProtectedRoute>
+                  } 
+                />
 
                 <Route path='/dashboard'
                 element={

@@ -20,19 +20,37 @@ const Dashboard = () => {
   const [showAll, setShowAll] = useState(false);
   const [cartCount, setCartCount] = useState(0);
   const [favoritesCount, setFavoritesCount] = useState(0);
+  const [cartItems, setCartItems] = useState([]);
+  const [favoriteItems, setFavoriteItems] = useState([]);
+  const [showCartList, setShowCartList] = useState(false);
+  const [showFavoritesList, setShowFavoritesList] = useState(false);
   const visibleProducts = showAll ? showProducts : showProducts.slice(0, 6);
   const navigate = useNavigate();
 
-  const handleAddToFavorites = () => {
-  toast.success("Added to favorites", {
-    style: {
-      background: "#F4A460", 
-      color: "#5C4033",     
-    },
-  });
+  const handleAddToFavorites = (product) => {
+
+    const alreadyFavorited = favoriteItems.some((item) => item._id === product._id);
+
+      if (alreadyFavorited) {
+        toast.info("Item already in favorites", {
+          style: {
+            background: "#FFD700",
+            color: "#333",
+          },
+        });
+        return;
+      }
+      setFavoriteItems((prev) => [...prev, product]);
+      toast.success("Added to favorites", {
+        style: {
+          background: "#F4A460", 
+          color: "#5C4033",     
+        },
+      });
 };
 
 const handleAddToCart = async(product) => {
+  setCartItems((prev) => [...prev, product]);
       toast.success("Added to cart", {
         style: {
         background: "#F4A460", 
@@ -40,6 +58,15 @@ const handleAddToCart = async(product) => {
       },
       });
 };
+
+useEffect(() => {
+  setCartCount(cartItems.length);
+}, [cartItems]);
+
+useEffect(() => {
+  setFavoritesCount(favoriteItems.length);
+}, [favoriteItems]);
+
   
   const handleBuyNow = (product) => {
 
@@ -79,9 +106,18 @@ const handleAddToCart = async(product) => {
           confirmButtonText: 'Next'
         }).then((discountResult) => {
           const enteredDiscountCode = discountResult.value || '';
+
+          if (enteredDiscountCode && enteredDiscountCode !== 'OvenlyHazelCookies') {
+              Swal.fire({
+                icon: 'error',
+                title: 'Invalid Code',
+                text: 'The discount code you entered is not valid.',
+              });
+              return; 
+            }
+
           const calculatedTotal = calculateTotalPrice(product.price, enteredQuantity, enteredDiscountCode);
 
-      
           Swal.fire({
             title: 'Confirm Purchase',  
             html: `
@@ -116,8 +152,6 @@ const handleAddToCart = async(product) => {
     
      if (discountCode === 'OvenlyHazelCookies') {
       price = price * 0.8;
-    }else if (discountCode === 'SweetCookies') {
-      price = price * 0.9;
     }
     return price;
   };
@@ -233,29 +267,61 @@ const handleAddToCart = async(product) => {
 
     <>
 
-    <div className="min-h-screen bg-bg-color">
+    <div className="min-h-screen bg-bg-color relative">
 
       <DashNavigation />
 
        <div className='bg-accent-color flex items-center justify-end gap-x-5 px-10 py-3 text-text-color sticky top-0 z-10 shadow-xs shadow-accent-color'>
 
         <div className="relative">
-          <FontAwesomeIcon icon={faCartShopping} className='text-md cursor-pointer hover:text-main-color' />
-          {cartCount > 0 && (
-            <span className="absolute -top-2 -right-2 bg-main-color text-text-color text-xs w-5 h-5 flex items-center justify-center rounded-full">
-              {cartCount}
-            </span>
-          )}
+          <FontAwesomeIcon
+            icon={faCartShopping}
+            onClick={() => navigate('/cart')}
+            className='text-md cursor-pointer hover:text-main-color' 
+          />
         </div>
 
         <div className="relative">
-          <FontAwesomeIcon icon={faHeart} className='text-md cursor-pointer hover:text-main-color' />
-          {favoritesCount > 0 && (
-            <span className="absolute -top-2 -right-2 bg-main-color text-text-color text-xs w-5 h-5 flex items-center justify-center rounded-full">
-              {favoritesCount}
-            </span>
+          <FontAwesomeIcon
+            icon={faHeart}
+            onClick={() => navigate('/favorites')}
+            className='text-md cursor-pointer hover:text-main-color' 
+          />
+        </div>
+
+          {showCartList && (
+        <div className="absolute top-16 right-10 bg-white p-4 rounded shadow-md w-64 z-50">
+          <h3 className="text-lg font-bold mb-2">Cart Items</h3>
+          {cartItems.length === 0 ? (
+            <p className="text-gray-500">No items in cart.</p>
+          ) : (
+            <ul>
+              {cartItems.map((item, idx) => (
+                <li key={idx} className="border-b py-2">
+                  {item.name} - ₱{item.price}
+                </li>
+              ))}
+            </ul>
           )}
         </div>
+      )}
+
+      {showFavoritesList && (
+        <div className="absolute top-16 right-10 bg-white p-4 rounded shadow-md w-64 z-50">
+          <h3 className="text-lg font-bold mb-2">Favorites</h3>
+          {favoriteItems.length === 0 ? (
+            <p className="text-gray-500">No favorites yet.</p>
+          ) : (
+            <ul>
+              {favoriteItems.map((item, idx) => (
+                <li key={idx} className="border-b py-2">
+                  {item.name} - ₱{item.price}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      )}
 
         <FontAwesomeIcon icon={faBell} className='text-md cursor-pointer hover:text-main-color' />
           
@@ -269,7 +335,7 @@ const handleAddToCart = async(product) => {
         <div className="p-10">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {visibleProducts.map(product => (
-                  <div key={product._id} className="bg-bg-color shadow-md rounded-lg p-5">
+                  <div key={product._id} className="bg-bg-color shadow-md rounded-lg p-5 ">
                   <img src={`http://localhost:4200/uploads/${product.image}`}
                   alt={product.name}
                   className='rounded-sm mb-2 h-48 w-full object-contain'/>
@@ -294,11 +360,14 @@ const handleAddToCart = async(product) => {
 
                         <div className="relative group inline-block">
 
-                          <FontAwesomeIcon icon={faCartShopping} className='text-lg text-main-color mt-3 hover:cursor-pointer hover:text-accent-color' 
-                          onClick={() => {
-                            setCartCount(prev => prev + 1);
-                            handleAddToCart(); 
-                          }}/>
+                         <div className="flex justify-between mt-4">
+                            <FontAwesomeIcon
+                              icon={faCartShopping}
+                              className="text-xl text-main-color cursor-pointer hover:text-accent-color"
+                              onClick={() => handleAddToCart(product)}
+                            />
+                           
+                          </div>
 
                           <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-accent-color text-text-color text-xs px-3 py-1 rounded opacity-0 group-hover:opacity-100 transition pointer-events-none w-16 text-center">
                           Add to cart
@@ -308,11 +377,11 @@ const handleAddToCart = async(product) => {
                         
                         <div className="relative group inline-block">
 
-                          <FontAwesomeIcon icon={faHeart} className='text-lg text-main-color mt-3 hover:cursor-pointer hover:text-accent-color'
-                           onClick={() => {
-                              setFavoritesCount(prev => prev + 1);
-                              handleAddToFavorites();
-                            }}  />
+                           <FontAwesomeIcon
+                              icon={faHeart}
+                              className="text-xl text-main-color cursor-pointer hover:text-accent-color"
+                              onClick={() => handleAddToFavorites(product)}
+                            />
 
                            <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-accent-color text-text-color text-xs px-3 py-1 rounded opacity-0 group-hover:opacity-100 transition pointer-events-none">
                           Add to favorites
@@ -347,6 +416,7 @@ const handleAddToCart = async(product) => {
           
         )}
       </div>
+
     </div>
     </>
   )
