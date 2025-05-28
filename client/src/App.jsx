@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import AOS from "aos";
 import "aos/dist/aos.css";
 import LandingPage from './pages/landingpage';
 import SignIn from './pages/signin';
@@ -29,15 +28,10 @@ import AdminOrders from './pages/admin/admin-orders';
 import 'react-toastify/dist/ReactToastify.css';
 import CartPage from './pages/user/cart';
 import FavoritesPage from './pages/user/favorites';
-import axios from 'axios';
 
 
 
 function App() {  
-
-  useEffect(() => {
-    AOS.init(); 
-  }, []);
 
   return (
     
