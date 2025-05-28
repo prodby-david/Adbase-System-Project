@@ -117,7 +117,7 @@ const UserOrders = () => {
               <td className="p-5 text-center">{order.productName}</td>
               <td className="p-5 text-center">{order.quantity}</td>
               <td className="p-5 text-center">₱{order.totalPrice}</td>
-               <td className="p-5 text-center">
+              <td className="p-5 text-center">
                 <div className="flex items-center justify-center gap-2">
                   <div
                     className={`w-3 h-3 rounded-full ${getStatusColor(order.status)} ${shouldPulse(order.status) ? 'animate-pulse' : ''}`}
@@ -126,7 +126,7 @@ const UserOrders = () => {
                 </div>
               </td>
               <td className="p-5 text-center"><span>{new Date(order.createdAt).toLocaleString()}</span></td>
-              <div>
+              <td className="p-5 text-center">
                 {order.status === 'Pending' ? (
                   <button
                     className="mt-3.5 p-2 bg-red-500 text-white text-sm rounded hover:bg-red-600 transition cursor-pointer"
@@ -135,12 +135,11 @@ const UserOrders = () => {
                     Cancel Order
                   </button>
                 ) : null}
-              </div>
-              
-                      
+              </td>
             </tr>
           ))}
         </tbody>
+
       </table>
       
       {!showAll && orders.length > 10 && (
