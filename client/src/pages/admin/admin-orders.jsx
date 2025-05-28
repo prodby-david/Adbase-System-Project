@@ -19,7 +19,7 @@ const AdminOrders = () => {
 
   useEffect(() => {
     const fetchOrders = async () => {
-        const res = await axios.get(`${baseUrl}/admin-orders`);
+        const res = await axios.get(`${baseUrl}/admin-orders` , { withCredentials: true });
         setOrders(res.data.orders);
     };
 
@@ -37,7 +37,7 @@ const AdminOrders = () => {
 }, []);
 
   const updateStatus = async (orderId, newStatus) => {
-    await axios.put(`${baseUrl}/admin-orders/${orderId}`, {
+    await axios.put(`${baseUrl}/admin-orders/${orderId}`,{
       status: newStatus,
     });
   };
