@@ -1,7 +1,7 @@
 import React from 'react'
 import Swal from 'sweetalert2'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowRightLong, faTimes, faChartLine, faBoxOpen, faPenToSquare, faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRightLong, faTimes, faChartLine, faBoxOpen, faPenToSquare, faArrowRightFromBracket, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAdminContext } from '../context/adminContext';
@@ -79,7 +79,7 @@ const AdminNav = () => {
         </li>
 
         <li className='w-full text-center text-md border-0 border-b-1 p-5 border-main-color'>
-          <a href="/create-product" className='text-text-color'><FontAwesomeIcon icon={faPenToSquare} className='text-main-color mr-2'/>Create Product</a>
+          <a href="/create-product" className='text-text-color'><FontAwesomeIcon icon={faPlus} className='text-main-color mr-2'/>Create Product</a>
         </li>
 
         <li className='w-full text-center text-md border-0 border-b-1 p-5 border-main-color'>

@@ -7,10 +7,6 @@ const userFeedbackSchema = new mongoose.Schema({
         ref: 'User',
         required: true
     },
-    fullname:{
-        type: String,
-        required: true
-    },
     email:{
         type: String,
         required: true

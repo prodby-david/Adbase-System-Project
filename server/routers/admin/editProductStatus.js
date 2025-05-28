@@ -7,11 +7,12 @@ const EditProductStatus = express.Router();
 EditProductStatus.put('/admin-orders/:orderId', async (req, res) => {
   try {
     const { status } = req.body;
+    const normalizedStatus = status.charAt(0).toUpperCase() + status.slice(1).toLowerCase();
     const { orderId } = req.params;
 
     const updatedOrder = await Order.findByIdAndUpdate(
       orderId,
-      { status },
+      { status: normalizedStatus },
       { new: true }
     );
 
@@ -27,6 +28,7 @@ EditProductStatus.put('/admin-orders/:orderId', async (req, res) => {
     }
     
     io.emit('orderStatusUpdated', updatedOrder);
+
     res.json({ message: 'Order status updated', order: updatedOrder });
   } catch (err) {
     console.error(err);

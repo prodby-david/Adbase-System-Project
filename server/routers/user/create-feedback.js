@@ -9,15 +9,14 @@ CreateFeedback.post('/api/user-feedback', authToken, async (req, res) => {
 
     try {
         const userId = req.user.userId;
-        const { fullname, email, comment } = req.body;
+        const { email, comment } = req.body;
 
-        if (!fullname || !email || !comment) {
+        if ( !email || !comment) {
             return res.status(400).json({ message: 'All fields are required.' });
         }
 
         const newFeedback = new Feedback({
             userId: userId, 
-            fullname,
             email,
             comment
         });

@@ -9,7 +9,6 @@ const baseUrl = import.meta.env.VITE_BACKEND_BASE_URL;
 const FeedbackForm = () => {
 
   const [userFeedbackData, setUserFeedbackData] = useState({
-    fullname: '',
     email: '',
     comment: ''
   });
@@ -26,9 +25,9 @@ const FeedbackForm = () => {
 
     e.preventDefault();
 
-    const { fullname, email, comment } = userFeedbackData;
+    const { email, comment } = userFeedbackData;
 
-    if (!fullname || !comment || !email) {
+    if ( !comment || !email) {
 
       Swal.fire({
         title: 'Submission failed',
@@ -83,18 +82,6 @@ const FeedbackForm = () => {
   
           <form className='w-full flex flex-col gap-5 p-2' onSubmit={feedbackClicked}>
             
-            <div className='flex flex-col gap-y-1'>
-              <label htmlFor="Name" className='text-text-color text-sm'>Full name</label>
-              <input type="text" 
-              name='fullname' 
-              id='Name'
-              className='w-full border border-main-color outline-0 p-2 rounded-md text-sm focus:border-accent-color' 
-              placeholder='Full name'
-              onChange={handleChange}
-              value={userFeedbackData.fullname} 
-              />
-            </div>
-
             <div className='flex flex-col gap-y-1'>
               <label htmlFor="Email" className='text-text-color text-sm'>Email</label>
               <input type="email" 

@@ -1,11 +1,51 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import AdminNav from '../../components/admin-nav';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPesoSign, faUser, faArrowRight, faClipboardList, faCoins, faChartLine, faUsers, faSquarePen } from '@fortawesome/free-solid-svg-icons';
+import axios from 'axios';
+import { faPesoSign, faUser, faArrowRight, faClipboardList, faCoins, faChartLine, faUsers, faSquarePen, faTableList } from '@fortawesome/free-solid-svg-icons';
+import io from 'socket.io-client';
 
 
+const baseUrl = import.meta.env.VITE_BACKEND_BASE_URL;
+const socket = io(baseUrl);
 
 const AdminDashboard = () => {
+
+    const [productCount, setProductCount] = useState(0);
+    const [userCount, setUserCount] = useState(0);
+    const [totalSales, setTotalSales] = useState(0);
+    const [orders, setOrders] = useState([]);
+
+
+    useEffect(() => {
+      const fetchCounts = async () => {
+        try {
+          const productRes = await axios.get(`${baseUrl}/count-product`);
+          const userRes = await axios.get(`${baseUrl}/user-count`);
+          const res = await axios.get(`${baseUrl}/orders`);
+          const salesRes = await axios.get(`${baseUrl}/total-sales`);
+
+
+          setProductCount(productRes.data.totalProducts); 
+          setUserCount(userRes.data.totalUsers);
+          setOrders(res.data.orders);  
+          setTotalSales(salesRes.data.totalSales);
+
+        } catch (error) {
+          console.error('Failed to fetch counts', error);
+        }
+      };
+
+      fetchCounts();
+
+      socket.on('orderStatusUpdated', fetchCounts);
+      socket.on('productDeleted', fetchCounts);
+
+      return () => {
+        socket.off('orderStatusUpdated');
+        socket.off('productDeleted');
+      };
+    }, []);
 
   return (
     
@@ -41,11 +81,11 @@ const AdminDashboard = () => {
 
             <div className='flex items-center mt-7 gap-x-2'>
               <FontAwesomeIcon icon={faClipboardList} className='text-[28px] text-main-color'/>
-              <p className='text-text-color text-[32px] font-semibold'>16</p>
+              <p className='text-text-color text-[32px] font-semibold'>{productCount}</p>
             </div>
 
             <div className='mt-25'>
-              <a href="/product-list" className='text-main-color text-lg font-semibold hover:text-text-color'>
+              <a href="/show-products" className='text-main-color text-lg font-semibold hover:text-text-color'>
                 Check Product Listed<FontAwesomeIcon icon={faArrowRight} className='ml-1' />
               </a>
             </div>
@@ -67,7 +107,7 @@ const AdminDashboard = () => {
             <div className='flex items-center mt-7 gap-x-2'>
 
               <FontAwesomeIcon icon={faPesoSign} className='text-[28px] text-main-color'/>
-              <p className='text-text-color text-[32px] font-semibold'>512,357</p>
+              <p className='text-text-color text-[32px] font-semibold'>{totalSales.toLocaleString()}</p>
 
             </div>
 
@@ -93,14 +133,14 @@ const AdminDashboard = () => {
             
             <div className='flex items-center mt-7 gap-x-2'>
 
-              <FontAwesomeIcon icon={faPesoSign} className='text-[28px] text-main-color'/>
-              <p className='text-text-color text-[32px] font-semibold'>1,254</p>
+              <FontAwesomeIcon icon={faTableList} className='text-[28px] text-main-color' />
+              <p className='text-text-color text-[32px] font-semibold'>{orders.length}</p>
 
             </div>
 
             <div className='mt-25'>
-              <a href="product-list" className='text-main-color hover:text-text-color text-lg font-semibold'>
-                View Weekly Sales<FontAwesomeIcon icon={faArrowRight} className='ml-1' />
+              <a href="admin-orders" className='text-main-color hover:text-text-color text-lg font-semibold'>
+                Check Orders<FontAwesomeIcon icon={faArrowRight} className='ml-1' />
               </a>
             </div>
 
@@ -120,7 +160,7 @@ const AdminDashboard = () => {
 
             <div className='flex items-center mt-7 gap-x-2'>
               <FontAwesomeIcon icon={faUser} className='text-[28px] text-main-color'/>
-              <p className='text-text-color text-[32px] font-semibold'>128,092</p>
+              <p className='text-text-color text-[32px] font-semibold'>{userCount}</p>
             </div>
 
             <div className='mt-25'>

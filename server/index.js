@@ -17,6 +17,9 @@ import PurchaseRouter from './routers/user/purchase.js';
 import EditProductStatus from './routers/admin/editProductStatus.js';
 import AddToCartRouter from './routers/user/addToCart.js';
 import FavoritesRouter from './routers/user/addToFavorites.js';
+import ProductCountRouter from './routers/admin/productcount.js';
+import UserCountRouter from './routers/admin/usercount.js';
+import TotalSalesRouter from './routers/admin/totalsalesroute.js';
 import { Server } from 'socket.io';
 import http from 'http';
 
@@ -70,7 +73,9 @@ app.use('/uploads', express.static('uploads'));
 app.use(signUpRouter, signInRouter, AdminRouter,
 AdminLoginRouter, CreateFeedback, ForgotPassword, 
 ResetPassword, ProductRouter, PurchaseRouter, 
-OrderRouter, EditProductStatus, AddToCartRouter, FavoritesRouter);
+OrderRouter, EditProductStatus, AddToCartRouter, 
+FavoritesRouter, ProductCountRouter, UserCountRouter,
+TotalSalesRouter);
 
 server.listen(process.env.PORT, () => {
     console.log(`Server is running on PORT: ${process.env.PORT}`);
