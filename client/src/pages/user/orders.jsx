@@ -6,27 +6,6 @@ import Swal from 'sweetalert2';
 const baseUrl = import.meta.env.VITE_BACKEND_BASE_URL;
 const socket = io(baseUrl);
 
-const getStatusColor = (status) => {
-  switch (status) {
-    case 'Pending':
-      return 'bg-yellow-400'; 
-    case 'Preparing':
-      return 'bg-blue-400'; 
-    case 'Out for Delivery':
-      return 'bg-purple-500';
-    case 'Completed':
-      return 'bg-green-500'; 
-    case 'Cancelled':
-      return 'bg-red-500'; 
-    default:
-      return 'bg-gray-400'; 
-  }
-};
-
-const shouldPulse = (status) => {
-  return ['Pending', 'Preparing', 'Out for Delivery'].includes(status);
-};
-
 
 const UserOrders = () => {
 
@@ -53,6 +32,28 @@ const UserOrders = () => {
         socket.off('orderStatusUpdated');
       };
   }, []);
+
+      const getStatusColor = (status) => {
+      switch (status) {
+        case 'Pending':
+          return 'bg-yellow-400'; 
+        case 'Preparing':
+          return 'bg-blue-400'; 
+        case 'Out for Delivery':
+          return 'bg-purple-500';
+        case 'Completed':
+          return 'bg-green-500'; 
+        case 'Cancelled':
+          return 'bg-red-500'; 
+        default:
+          return 'bg-gray-400'; 
+      }
+    };
+
+    const shouldPulse = (status) => {
+      return ['Pending', 'Preparing', 'Out for Delivery'].includes(status);
+    };
+
 
   const handleCancelOrder = async (orderId) => {
   const result = await Swal.fire({
