@@ -77,7 +77,7 @@ OrderRouter, EditProductStatus, AddToCartRouter,
 FavoritesRouter, ProductCountRouter, UserCountRouter,
 TotalSalesRouter);
 
-app.get('/', (req, res) => {
+server.get('/', (req, res) => {
   res.send('Backend API is running');
 });
 
