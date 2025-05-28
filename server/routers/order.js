@@ -1,6 +1,7 @@
 import express from 'express';
 import Order from '../models/order.js';
 import Product from '../models/products.js';
+import authToken from '../middleware/authToken.js';
 import { io } from '../index.js'; 
 
 
@@ -29,9 +30,11 @@ OrderRouter.get('/admin-orders', async (req, res) => {
   }
 });
 
-OrderRouter.get('/orders', async (req, res) => {
+OrderRouter.get('/orders', authToken, async (req, res) => {
   try {
-    const orders = await Order.find({})
+    const userId = req.user._id; 
+
+    const orders = await Order.find({ userId })
       .populate('productId', 'name price image')
       .sort({ createdAt: -1 });
 
@@ -43,15 +46,16 @@ OrderRouter.get('/orders', async (req, res) => {
       quantity: order.quantity,
       totalPrice: order.totalPrice,
       status: order.status,
-      createdAt: order.createdAt,
+      createdAt: order.createdAt
     }));
 
     res.json({ success: true, orders: mappedOrders });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ success: false, message: 'Failed to fetch orders' });
+    res.status(500).json({ success: false, message: 'Failed to fetch user orders' });
   }
 });
+
 
 OrderRouter.put('/orders/:id', async (req, res) => {
   try {
