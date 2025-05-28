@@ -7,7 +7,8 @@ import { io } from '../index.js';
 
 const OrderRouter = express.Router();
 
-OrderRouter.get('/admin-orders', async (req, res) => {
+OrderRouter.get('/admin-orders', authToken, async (req, res) => {
+  
   try {
 
     const orders = await Order.find({}).populate('productId', 'name price image').sort({ createdAt: -1 });
