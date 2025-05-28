@@ -37,7 +37,7 @@ const UserOrders = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const res = await axios.get(`${baseUrl}/orders`, { withCredentials: true } );
+        const res = await axios.get(`${baseUrl}/orders`);
         setOrders(res.data.orders);
       } catch (err) {
         console.error('Failed to fetch orders', err);
@@ -68,9 +68,7 @@ const UserOrders = () => {
 
   if (result.isConfirmed) {
     try {
-      const res = await axios.put(`${baseUrl}/orders/${orderId}`,{}, {
-      withCredentials: true
-    });
+      const res = await axios.put(`${baseUrl}/orders/${orderId}`);
       if (res.data.success) {
         setOrders(prevOrders =>
           prevOrders.map(order =>

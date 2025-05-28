@@ -1,14 +1,12 @@
 import express from 'express';
 import Order from '../models/order.js';
 import Product from '../models/products.js';
-import authToken from '../middleware/authToken.js';
 import { io } from '../index.js'; 
 
 
 const OrderRouter = express.Router();
 
 OrderRouter.get('/admin-orders', async (req, res) => {
-
   try {
 
     const orders = await Order.find({}).populate('productId', 'name price image').sort({ createdAt: -1 });
@@ -31,11 +29,9 @@ OrderRouter.get('/admin-orders', async (req, res) => {
   }
 });
 
-OrderRouter.get('/orders', authToken, async (req, res) => {
+OrderRouter.get('/orders', async (req, res) => {
   try {
-    const userId = req.user._id; 
-
-    const orders = await Order.find({ userId })
+    const orders = await Order.find({})
       .populate('productId', 'name price image')
       .sort({ createdAt: -1 });
 
@@ -47,26 +43,22 @@ OrderRouter.get('/orders', authToken, async (req, res) => {
       quantity: order.quantity,
       totalPrice: order.totalPrice,
       status: order.status,
-      createdAt: order.createdAt
+      createdAt: order.createdAt,
     }));
 
     res.json({ success: true, orders: mappedOrders });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ success: false, message: 'Failed to fetch user orders' });
+    res.status(500).json({ success: false, message: 'Failed to fetch orders' });
   }
 });
 
-
-OrderRouter.put('/orders/:id', authToken, async (req, res) => {
+OrderRouter.put('/orders/:id', async (req, res) => {
   try {
-    const userId = req.user._id; 
     const order = await Order.findById(req.params.id);
     if (!order) {
       return res.status(404).json({ success: false, message: 'Order not found' });
     }
-
-    
 
     if (order.status !== 'Pending') {
       return res.status(400).json({ success: false, message: 'Only pending orders can be cancelled' });
