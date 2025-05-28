@@ -35,13 +35,6 @@ import axios from 'axios';
 
 function App() {  
 
-  const baseUrl = import.meta.env.VITE_BACKEND_BASE_URL;
-
-  useEffect(() => {
-    axios.get(`${baseUrl}/api/signup`);
-  },  []);
-  
-
   useEffect(() => {
     AOS.init(); 
   }, []);
