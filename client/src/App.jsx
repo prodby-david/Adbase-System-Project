@@ -34,6 +34,11 @@ import FavoritesPage from './pages/user/favorites';
 
 function App() {  
 
+
+  useEffect(() => {
+    AOS.init(); 
+  }, []);
+
   return (
     
       <AuthProvider>
