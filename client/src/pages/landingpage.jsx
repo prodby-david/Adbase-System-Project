@@ -20,7 +20,7 @@ const LandingPage = () => {
 
               <div className='flex flex-col items-center justify-center'>
 
-                <h2 className='text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-lora text-text-color' data-aos="fade-left" data-aos-duration="2000">Welcome to</h2>
+                <h2 className='text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-lora text-text-color' data-aos="fade-right" data-aos-duration="2000">Welcome to</h2>
 
                   <h2 className='text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-lora text-main-color' data-aos="fade-left" data-aos-duration="2000">Ovenly Hazel</h2>
 
