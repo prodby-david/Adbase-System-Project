@@ -1,6 +1,7 @@
 import express from 'express';
 import Order from '../models/order.js';
 import Product from '../models/products.js';
+import authToken from '../middleware/authToken.js';
 import { io } from '../index.js'; 
 
 
@@ -30,10 +31,9 @@ OrderRouter.get('/admin-orders', async (req, res) => {
   }
 });
 
-OrderRouter.get('/orders', async (req, res) => {
+OrderRouter.get('/orders', authToken, async (req, res) => {
   try {
-
-    const userId = req.user._id;
+    const userId = req.user._id; 
 
     const orders = await Order.find({ userId })
       .populate('productId', 'name price image')
@@ -58,17 +58,14 @@ OrderRouter.get('/orders', async (req, res) => {
 });
 
 
-OrderRouter.put('/orders/:id', async (req, res) => {
-
-
-
+OrderRouter.put('/orders/:id', authToken, async (req, res) => {
   try {
-
     const order = await Order.findById(req.params.id);
-
     if (!order) {
       return res.status(404).json({ success: false, message: 'Order not found' });
     }
+
+    
 
     if (order.status !== 'Pending') {
       return res.status(400).json({ success: false, message: 'Only pending orders can be cancelled' });
@@ -85,7 +82,7 @@ OrderRouter.put('/orders/:id', async (req, res) => {
     await order.save();
 
     res.json({ success: true, message: 'Order cancelled successfully' });
-    io.emit('orderStatusUpdated');
+    io.emit('newOrder');
 
   } catch (err) {
     console.error('Cancel order error:', err);
