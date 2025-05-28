@@ -33,9 +33,7 @@ OrderRouter.get('/admin-orders', async (req, res) => {
 OrderRouter.get('/orders', authToken, async (req, res) => {
   try {
     const userId = req.user.id;
-    console.log("Authenticated user:", req.user);
-
-    const orders = await Order.find({ userId })
+    const orders = await Order.find({userId})
       .populate('productId', 'name price image')
       .sort({ createdAt: -1 });
 
