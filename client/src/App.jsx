@@ -29,10 +29,18 @@ import AdminOrders from './pages/admin/admin-orders';
 import 'react-toastify/dist/ReactToastify.css';
 import CartPage from './pages/user/cart';
 import FavoritesPage from './pages/user/favorites';
+import axios from 'axios';
 
 
 
 function App() {  
+
+  const baseUrl = import.meta.env.VITE_BACKEND_BASE_URL;
+
+  useEffect(() => {
+    axios.get(`${baseUrl}/api/signup`);
+  },  []);
+  
 
   useEffect(() => {
     AOS.init(); 
