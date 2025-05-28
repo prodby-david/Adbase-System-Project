@@ -37,7 +37,7 @@ const UserOrders = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const res = await axios.get(`${baseUrl}/orders`, { withCredentials: true } );
+        const res = await axios.get(`${baseUrl}/orders`);
         setOrders(res.data.orders);
       } catch (err) {
         console.error('Failed to fetch orders', err);

@@ -1,13 +1,12 @@
 import express from 'express';
 import Order from '../models/order.js';
 import Product from '../models/products.js';
-import authToken from '../middleware/authToken.js';
 import { io } from '../index.js'; 
 
 
 const OrderRouter = express.Router();
 
-OrderRouter.get('/admin-orders', authToken, async (req, res) => {
+OrderRouter.get('/admin-orders', async (req, res) => {
 
   try {
 
@@ -31,7 +30,7 @@ OrderRouter.get('/admin-orders', authToken, async (req, res) => {
   }
 });
 
-OrderRouter.get('/orders', authToken, async (req, res) => {
+OrderRouter.get('/orders', async (req, res) => {
   try {
     const userId = req.user._id; 
 
@@ -58,12 +57,12 @@ OrderRouter.get('/orders', authToken, async (req, res) => {
 });
 
 
-OrderRouter.put('/orders/:id', authToken, async (req, res) => {
+OrderRouter.put('/orders/:id', async (req, res) => {
 
   const userId = req.user._id;
 
   try {
-    
+
     const order = await Order.findById(req.params.id);
     if (!order) {
       return res.status(404).json({ success: false, message: 'Order not found' });
