@@ -33,6 +33,8 @@ OrderRouter.get('/admin-orders', async (req, res) => {
 OrderRouter.get('/orders', async (req, res) => {
   try {
 
+    const userId = req.user._id;
+
     const orders = await Order.find({ userId })
       .populate('productId', 'name price image')
       .sort({ createdAt: -1 });
@@ -59,15 +61,13 @@ OrderRouter.get('/orders', async (req, res) => {
 OrderRouter.put('/orders/:id', async (req, res) => {
 
 
+
   try {
 
     const order = await Order.findById(req.params.id);
+
     if (!order) {
       return res.status(404).json({ success: false, message: 'Order not found' });
-    }
-
-     if (order.userId.toString() !== userId) {
-      return res.status(403).json({ success: false, message: 'Unauthorized to cancel this order' });
     }
 
     if (order.status !== 'Pending') {
