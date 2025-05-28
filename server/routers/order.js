@@ -32,7 +32,6 @@ OrderRouter.get('/admin-orders', async (req, res) => {
 
 OrderRouter.get('/orders', async (req, res) => {
   try {
-    const userId = req.user._id; 
 
     const orders = await Order.find({ userId })
       .populate('productId', 'name price image')
@@ -59,7 +58,6 @@ OrderRouter.get('/orders', async (req, res) => {
 
 OrderRouter.put('/orders/:id', async (req, res) => {
 
-  const userId = req.user._id;
 
   try {
 
