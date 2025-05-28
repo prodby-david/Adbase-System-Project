@@ -77,6 +77,11 @@ OrderRouter, EditProductStatus, AddToCartRouter,
 FavoritesRouter, ProductCountRouter, UserCountRouter,
 TotalSalesRouter);
 
+app.get('/', (req, res) => {
+  res.send('Backend API is running');
+});
+
+
 server.listen(process.env.PORT, () => {
     console.log(`Server is running on PORT: ${process.env.PORT}`);
     connectDB();
