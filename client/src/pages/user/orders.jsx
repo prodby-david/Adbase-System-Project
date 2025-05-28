@@ -123,14 +123,14 @@ const UserOrders = () => {
               <td className="p-5 text-center">
                 <div className="flex items-center justify-center gap-2">
                   <div
-                    className={`w-3 h-3 rounded-full ${getStatusColor(orders.status)} ${shouldPulse(order.status) ? 'animate-pulse' : ''}`}
+                    className={`w-3 h-3 rounded-full ${getStatusColor(orders.status)} ${shouldPulse(orders.status) ? 'animate-pulse' : ''}`}
                   ></div>
                   <span>{orders.status}</span>
                 </div>
               </td>
               <td className="p-5 text-center"><span>{new Date(orders.createdAt).toLocaleString()}</span></td>
               <td className="p-5 text-center">
-                {order.status === 'Pending' ? (
+                {orders.status === 'Pending' ? (
                   <button
                     className="mt-3.5 p-2 bg-red-500 text-white text-sm rounded hover:bg-red-600 transition cursor-pointer"
                     onClick={() => handleCancelOrder(orders._id)}
