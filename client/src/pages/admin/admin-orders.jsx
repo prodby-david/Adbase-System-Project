@@ -76,25 +76,33 @@ const AdminOrders = () => {
         <tbody>
           {orders.filter(order => statusFilter === 'All' || order.status === statusFilter)
           .slice(0,visibleCount).map((order) => (
-            <tr key={order._id} className="border-b border-main-color text-text-color">
-              <td className="p-4 text-center">{order.productName}</td>
-              <td className="p-4 text-center">{order.quantity}</td>
-              <td className='p-4 text-center'> <FontAwesomeIcon icon={faPesoSign} className='text-sm text-main-color'/>{order.totalPrice}</td>
-              <td className="p-4 text-center">
-                <select
-                  value={order.status}
-                  onChange={(e) => updateStatus(order._id, e.target.value)}
-                  className=" text-center p-2 hover:cursor-pointer text-text-color outline-0" 
-                  disabled={order.status === 'Completed' || order.status === 'Cancelled'}
+            <tr key={order._id} className="border-b text-text-color">
+            <td className="p-5 text-center">{order.productName}</td>
+            <td className="p-5 text-center">{order.quantity}</td>
+            <td className="p-5 text-center">₱{order.totalPrice}</td>
+            <td className="p-5 text-center">
+              <div className="flex items-center justify-center gap-2">
+                <div
+                  className={`w-3 h-3 rounded-full ${getStatusColor(order.status)} ${shouldPulse(order.status) ? 'animate-pulse' : ''}`}
+                ></div>
+                <span>{order.status}</span>
+              </div>
+            </td>
+            <td className="p-5 text-center">
+              <span>{new Date(order.createdAt).toLocaleString()}</span>
+            </td>
+            <td className="p-5 text-center">
+              {order.status === 'Pending' && (
+                <button
+                  className="p-2 bg-red-500 text-white text-sm rounded hover:bg-red-600 transition cursor-pointer"
+                  onClick={() => handleCancelOrder(order._id)}
                 >
-                  <option value="Pending">Pending</option>
-                  <option value="Preparing">Preparing</option>
-                  <option value="Out for Delivery">Out for Delivery</option>
-                  <option value="Completed">Completed</option>
-                  <option value="Cancelled">Cancelled</option>
-                </select>
-              </td>
-            </tr>
+                  Cancel Order
+                </button>
+              )}
+            </td>
+          </tr>
+
           ))}
         </tbody>
       </table>

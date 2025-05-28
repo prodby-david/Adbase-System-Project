@@ -68,7 +68,9 @@ const UserOrders = () => {
 
   if (result.isConfirmed) {
     try {
-      const res = await axios.put(`${baseUrl}/orders/${orderId}`);
+      const res = await axios.put(`${baseUrl}/orders/${orderId}`,{}, {
+        withCredentials: true
+      });
       if (res.data.success) {
         setOrders(prevOrders =>
           prevOrders.map(order =>

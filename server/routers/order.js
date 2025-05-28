@@ -8,7 +8,7 @@ import { io } from '../index.js';
 const OrderRouter = express.Router();
 
 OrderRouter.get('/admin-orders', authToken, async (req, res) => {
-  
+
   try {
 
     const orders = await Order.find({}).populate('productId', 'name price image').sort({ createdAt: -1 });
@@ -58,11 +58,15 @@ OrderRouter.get('/orders', authToken, async (req, res) => {
 });
 
 
-OrderRouter.put('/orders/:id', async (req, res) => {
+OrderRouter.put('/orders/:id', authToken, async (req, res) => {
   try {
     const order = await Order.findById(req.params.id);
     if (!order) {
       return res.status(404).json({ success: false, message: 'Order not found' });
+    }
+
+     if (order.userId.toString() !== userId) {
+      return res.status(403).json({ success: false, message: 'Unauthorized to cancel this order' });
     }
 
     if (order.status !== 'Pending') {
@@ -80,7 +84,7 @@ OrderRouter.put('/orders/:id', async (req, res) => {
     await order.save();
 
     res.json({ success: true, message: 'Order cancelled successfully' });
-    io.emit('newOrder');
+    io.emit('orderStatusUpdated');
 
   } catch (err) {
     console.error('Cancel order error:', err);
