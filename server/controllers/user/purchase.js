@@ -3,7 +3,8 @@ import Order from "../../models/order.js";
 import { io } from "../../index.js";
 
 const Purchase = async (req, res) => {
-  const { productId, quantity, discountCode, deliveryOption, userId} = req.body;
+  const { productId, quantity, discountCode, deliveryOption } = req.body;
+  const userId = req.user.id;
 
   try {
     const product = await Product.findById(productId);
@@ -24,11 +25,11 @@ const Purchase = async (req, res) => {
     }
 
     const order = new Order({
-        userId: req.user._id,
-        productId: req.body.productId,
-        quantity: req.body.quantity,
-        totalPrice: req.body.totalPrice,
-        status: 'Pending',
+      userId,
+      productId,
+      quantity,
+      totalPrice,
+      discountCode,
     });
 
     await order.save();
