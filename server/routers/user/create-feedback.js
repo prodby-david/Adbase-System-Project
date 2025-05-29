@@ -8,15 +8,13 @@ const CreateFeedback = express.Router();
 CreateFeedback.post('/user-feedback', authToken, async (req, res) => {
 
     try {
-        const userId = req.user.userId;
         const { email, comment } = req.body;
 
         if ( !email || !comment) {
             return res.status(400).json({ message: 'All fields are required.' });
         }
 
-        const newFeedback = new Feedback({
-            userId: userId, 
+        const newFeedback = new Feedback({ 
             email,
             comment
         });
