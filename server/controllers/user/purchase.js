@@ -29,6 +29,7 @@ const Purchase = async (req, res) => {
       quantity,
       totalPrice,
       discountCode,
+      deliveryOption,
     });
 
     await order.save();
