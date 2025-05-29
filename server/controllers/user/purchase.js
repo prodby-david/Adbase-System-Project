@@ -1,9 +1,11 @@
 import Product from "../../models/products.js";
 import Order from "../../models/order.js";
 import { io } from "../../index.js";
+import authToken from "../../middleware/authToken.js";
 
 const Purchase = async (req, res) => {
-  const { productId, quantity, discountCode, deliveryOption, userId} = req.body;
+  
+  const { productId, quantity, discountCode, deliveryOption } = req.body;
 
   try {
     const product = await Product.findById(productId);
@@ -24,7 +26,7 @@ const Purchase = async (req, res) => {
     }
 
     const order = new Order({
-      userId,
+      userId:  req.user.id,
       productId,
       quantity,
       totalPrice,
