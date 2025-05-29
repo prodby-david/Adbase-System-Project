@@ -11,7 +11,7 @@ const Feedback = () => {
       useEffect(() => {
         const fetchFeedback = async () => {
             try {
-                const response = await axios.get(`${baseUrl}/api/user-feedback`);
+                const response = await axios.get(`${baseUrl}/user-feedback`);
                 setFeedback(response.data);
             } catch (error) {
                 console.error('Error fetching feedback:', error.message);
