@@ -1,7 +1,6 @@
 import Product from "../../models/products.js";
 import Order from "../../models/order.js";
 import { io } from "../../index.js";
-import authToken from "../../middleware/authToken.js";
 
 const Purchase = async (req, res) => {
   
