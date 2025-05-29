@@ -1,7 +1,6 @@
 import express from 'express';
 import Order from '../models/order.js';
 import Product from '../models/products.js';
-import authToken from '../middleware/authToken.js';
 import { io } from '../index.js'; 
 
 
@@ -30,10 +29,9 @@ OrderRouter.get('/admin-orders', async (req, res) => {
   }
 });
 
-OrderRouter.get('/orders', authToken, async (req, res) => {
+OrderRouter.get('/orders', async (req, res) => {
   try {
-    const userId = req.user.id;
-    const orders = await Order.find({userId})
+    const orders = await Order.find({})
       .populate('productId', 'name price image')
       .sort({ createdAt: -1 });
 
