@@ -41,7 +41,7 @@ const FeedbackForm = () => {
 
     try {
 
-       await axios.post(`${baseUrl}/api/user-feedback`, userFeedbackData, {withCredentials: true});
+       await axios.post(`${baseUrl}/user-feedback`, userFeedbackData, {withCredentials: true});
 
        Swal.fire({
         title: 'Feedback submitted.',
