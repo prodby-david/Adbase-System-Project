@@ -20,10 +20,10 @@ const AdminDashboard = () => {
     useEffect(() => {
       const fetchCounts = async () => {
         try {
-          const productRes = await axios.get(`${baseUrl}/count-product`);
-          const userRes = await axios.get(`${baseUrl}/user-count`);
-          const res = await axios.get(`${baseUrl}/orders`);
-          const salesRes = await axios.get(`${baseUrl}/total-sales`);
+          const productRes = await axios.get(`${baseUrl}/count-product`,{ withCredentials: true });
+          const userRes = await axios.get(`${baseUrl}/user-count`,{ withCredentials: true });
+          const res = await axios.get(`${baseUrl}/orders`,{ withCredentials: true } );
+          const salesRes = await axios.get(`${baseUrl}/total-sales`,{ withCredentials: true });
 
 
           setProductCount(productRes.data.totalProducts); 
