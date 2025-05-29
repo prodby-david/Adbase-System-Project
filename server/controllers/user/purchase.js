@@ -24,12 +24,11 @@ const Purchase = async (req, res) => {
     }
 
     const order = new Order({
-      userId,
-      productId,
-      quantity,
-      totalPrice,
-      discountCode,
-      deliveryOption,
+        userId: req.user._id,
+        productId: req.body.productId,
+        quantity: req.body.quantity,
+        totalPrice: req.body.totalPrice,
+        status: 'Pending',
     });
 
     await order.save();
