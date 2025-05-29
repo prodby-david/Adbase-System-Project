@@ -5,16 +5,18 @@ import authToken from '../../middleware/authToken.js';
 
 const CreateFeedback = express.Router();
 
-CreateFeedback.post('/user-feedback', authToken, async (req, res) => {
+CreateFeedback.post('/api/user-feedback', authToken, async (req, res) => {
 
     try {
+        const userId = req.user.userId;
         const { email, comment } = req.body;
 
         if ( !email || !comment) {
             return res.status(400).json({ message: 'All fields are required.' });
         }
 
-        const newFeedback = new Feedback({ 
+        const newFeedback = new Feedback({
+            userId: userId, 
             email,
             comment
         });
