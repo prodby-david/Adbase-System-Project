@@ -5,7 +5,7 @@ import authToken from '../../middleware/authToken.js';
 
 const CreateFeedback = express.Router();
 
-CreateFeedback.post('/api/user-feedback', authToken, async (req, res) => {
+CreateFeedback.post('/user-feedback', authToken, async (req, res) => {
 
     try {
         const userId = req.user.userId;
